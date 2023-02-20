@@ -129,7 +129,7 @@ Resources:
       VpcId: !Ref MyVpc  
 
   MyDBSecurityGroup:
-    Type: AWS::RDS::SecurityGroup
+    Type: AWS::EC2::SecurityGroup
     Properties:
       
       GroupDescription: My SG with port 22 and 8080 inbound
