@@ -80,14 +80,13 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref ImageId
-      
+      InstanceType: !Ref InstanceType
       KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref MySecurityGroup
         - !Ref MyDBSecurityGroup
       AvailabilityZone: !Ref MyAvailabilityZone
       SubnetId: !Ref PrivateSubnet1
-
       Tags:
         - Key: Name
           Value: Demoec2  

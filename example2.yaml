@@ -3,11 +3,24 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'This template deploys VPC with a pair of public and private subnets.
-  It deploys an Internet Gateway, with a default route on the public subnets and NAT
-  gateway and route for private subnet.
-
   '
 Parameters:
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+ 
+  ImageId:
+    Type: String
+    Default: ami-0e742cca61fb65051
+
+  InstanceType:
+    Type: String
+    Default: t2.micro
+
+  MyAvailabilityZone:
+    Description: Select the AZ
+    Type: String
+    Default: ap-south-1a 
+    
   VPCCIDR:
     Type: String
     Description: Please enter the IP range (CIDR notation) for this VPC
@@ -30,6 +43,20 @@ Parameters:
     Default: 10.0.1.0/24
     
 Resources:
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref ImageId
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !Ref MySecurityGroup
+      
+      AvailabilityZone: !Ref MyAvailabilityZone
+      SubnetId: !Ref PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: Demoec2  
   VPC:
     Type: AWS::EC2::VPC
     Properties:
@@ -140,8 +167,8 @@ Resources:
       MapPublicIpOnLaunch: false
       Tags:
       - Key: Name
-        Value:
-          Fn::Sub: Private-Subnet
+        Value: Private-Subnet
+        
 
   PrivateSubnetRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -150,7 +177,28 @@ Resources:
         Ref: PrivateSubnetRouteTable
       SubnetId:
         Ref: PrivateSubnet
-        
+
+
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      
+      GroupDescription: My SG with port 22 and 8080 inbound
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8080          
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+
+      Tags:
+        - Key: Name
+          Value: EC2-SG
+      VpcId: !Ref MyVpc  
+
 Outputs:
   InternetGateway:
     Description: A reference to the IG
