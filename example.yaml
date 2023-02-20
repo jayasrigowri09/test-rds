@@ -108,16 +108,6 @@ Resources:
          - Key: Name
            Value: Private-TestSubnet1
 
-  PrivateSubnet2:
-    Type: AWS::EC2::Subnet
-    Properties:
-      CidrBlock: !Ref PrivateSubnet2CIDR
-      AvailabilityZone: !Select [ 1, !GetAZs ]
-      VpcId: !Ref MyVpc
-      Tags:
-         - Key: Name
-           Value: Private-TestSubnet2
-
   MySecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
