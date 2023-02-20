@@ -18,10 +18,6 @@ Parameters:
     Description: please enter the Ip range
     Default: 10.0.0.0/24
 
-  PrivateSubnet12IDR:
-    Type: String
-    Description: please enter the Ip range
-    Default: 10.0.1.0/24
 
   DBName:
     Default: MyDatabase
