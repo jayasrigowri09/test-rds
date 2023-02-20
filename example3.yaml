@@ -111,7 +111,7 @@ Resources:
 
   AZANatGatewayEIP:
     Type: AWS::EC2::EIP
-    DependsOn: GatewayToInternet
+    DependsOn: InternetGateway
     Properties:
       Domain: Myvpc
 
