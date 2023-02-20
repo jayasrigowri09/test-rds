@@ -83,7 +83,7 @@ Resources:
       MasterUsername: !Ref DBUser
       MasterUserPassword: !Ref DBPassword
       MultiAZ: !Ref MultiAZ
-    #DeletionPolicy: !Ref SnapshotOnDelete 
+    DeletionPolicy: !Ref SnapshotOnDelete 
 
   MyVpc:
     Type: AWS::EC2::VPC
