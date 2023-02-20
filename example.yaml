@@ -28,8 +28,10 @@ Parameters:
     Description: please enter the Ip range
     Default: 10.0.0.0/24
 
- 
-  
+  MyAvailabilityZone:
+    Description: Select the AZ
+    Type: String
+    Default: ap-south-1a 
 
 Resources:
 
