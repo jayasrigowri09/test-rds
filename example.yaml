@@ -6,6 +6,18 @@ Description: create an RDS database with Mysql
 
 
 Parameters:
+
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+
+  InstanceType:
+    Type: String
+    Default: t2.micro
+  
+  ImageId:
+    Type: String
+    Default: ami-0e742cca61fb65051
+    
   VpcCIDR:
     Type: String
     Description: Please enter the Ip range
