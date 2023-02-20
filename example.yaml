@@ -84,6 +84,7 @@ Resources:
       KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref MySecurityGroup
+        - !Ref MyDBSecurityGroup
       AvailabilityZone: !Ref MyAvailabilityZone
       SubnetId: !Ref PrivateSubnet1
 
