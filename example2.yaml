@@ -52,7 +52,7 @@ Resources:
       SecurityGroupIds:
         - !Ref MySecurityGroup
       AvailabilityZone: !Ref MyAvailabilityZone
-      SubnetId: !Ref PublicSubnet1
+      SubnetId: !Ref PublicSubnet
 
       Tags:
         - Key: Name
