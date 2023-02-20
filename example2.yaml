@@ -51,16 +51,16 @@ Resources:
       KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref MySecurityGroup
-      
       AvailabilityZone: !Ref MyAvailabilityZone
-      SubnetId: !Ref PublicSubnet
+      SubnetId: !Ref PublicSubnet1
+
       Tags:
         - Key: Name
           Value: Demoec2  
-  VPC:
+  MyVpc:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: !Ref VPCCIDR
+      CidrBlock: !Ref VpcCIDR
       EnableDnsSupport: true
       EnableDnsHostnames: true
       InstanceTenancy: default
@@ -81,13 +81,13 @@ Resources:
       InternetGatewayId:
         Ref: InternetGateway
       VpcId:
-        Ref: VPC
+        Ref: MyVpc
 
   PublicSubnetRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId:
-        Ref: VPC
+        Ref: MyVpc
       Tags:
       - Key: Name
         Value: Public-SubnetRT
@@ -106,7 +106,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId:
-        Ref: VPC
+        Ref: MyVpc
       CidrBlock:
         Ref: PublicSubnetCIDR
       MapPublicIpOnLaunch: true
@@ -126,7 +126,7 @@ Resources:
     Type: AWS::EC2::EIP
     DependsOn: GatewayToInternet
     Properties:
-      Domain: vpc
+      Domain: Myvpc
 
   AZANatGateway:
     Type: AWS::EC2::NatGateway
@@ -142,7 +142,7 @@ Resources:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId:
-        Ref: VPC
+        Ref: MyVpc
       Tags:
       - Key: Name
         Value: Private-Subnet-RT
@@ -160,7 +160,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId:
-        Ref: VPC
+        Ref: MyVpc
       CidrBlock:
         Ref: PrivateSubnetCIDR
       MapPublicIpOnLaunch: false
@@ -196,7 +196,7 @@ Resources:
       Tags:
         - Key: Name
           Value: EC2-SG
-      VpcId: !Ref Vpc  
+      VpcId: !Ref MyVpc  
 
 Outputs:
   InternetGateway:
@@ -206,7 +206,7 @@ Outputs:
   VPC:
     Description: A reference to the created VPC
     Value:
-      Ref: VPC
+      Ref: MyVpc
   PublicSubnet:
     Description: A reference to the public subnet
     Value:
