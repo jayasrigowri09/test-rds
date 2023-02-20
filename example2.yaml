@@ -53,15 +53,14 @@ Resources:
         - !Ref MySecurityGroup
       
       AvailabilityZone: !Ref MyAvailabilityZone
-      SubnetId: !Ref PublicSubnet1
+      SubnetId: !Ref PublicSubnet
       Tags:
         - Key: Name
           Value: Demoec2  
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock:
-        Ref: VPCCIDR
+      CidrBlock: !Ref VPCCIDR
       EnableDnsSupport: true
       EnableDnsHostnames: true
       InstanceTenancy: default
@@ -197,7 +196,7 @@ Resources:
       Tags:
         - Key: Name
           Value: EC2-SG
-      VpcId: !Ref MyVpc  
+      VpcId: !Ref Vpc  
 
 Outputs:
   InternetGateway:
