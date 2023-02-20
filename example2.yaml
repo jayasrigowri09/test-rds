@@ -19,7 +19,7 @@ Parameters:
   MyAvailabilityZone:
     Description: Select the AZ
     Type: String
-    Default: ap-south-1a 
+    Default: ap-south-1
     
   VPCCIDR:
     Type: String
