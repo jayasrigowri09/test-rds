@@ -161,3 +161,166 @@ Resources:
 
 
 
+
+
+
+
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: create an RDS database with Mysql
+
+
+Parameters:
+  VpcCIDR:
+    Type: String
+    Description: Please enter the Ip range
+    Default: 10.0.0.0/24
+
+  PrivateSubnet1CIDR:
+    Type: String
+    Description: please enter the Ip range
+    Default: 10.0.0.0/24
+
+  PrivateSubnet12IDR:
+    Type: String
+    Description: please enter the Ip range
+    Default: 10.0.1.0/24
+
+  DBName:
+    Default: MyDatabase
+    Description: The database name
+    Type: String
+    MinLength: '1'
+    MaxLength: '64'
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
+
+  DBUser:
+    NoEcho: 'true'
+    Description: The database admin account username
+    Type: String
+    MinLength: '1'
+    MaxLength: '16'
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
+
+  DBPassword:
+    NoEcho: 'true'
+    Description: The database admin account password
+    Type: String
+    MinLength: '1'
+    MaxLength: '41'
+    AllowedPattern: '[a-zA-Z0-9]+'
+    ConstraintDescription: must contain only alphanumeric characters.
+
+  DBAllocatedStorage:
+    Default: '5'
+    Description: The size of the database (Gb)
+    Type: Number
+    MinValue: '5'
+    MaxValue: '1024'
+    ConstraintDescription: must be between 5 and 1024Gb.
+
+  DBInstanceClass:
+    Description: The database instance type
+    Type: String
+    Default: db.t2.small
+
+  MultiAZ:
+    Description: Multi-AZ master database
+    Type: String
+    Default: 'false'
+
+  SnapshotOnDelete:
+    Description: Do you want to create a Snapshot on instance delete?
+    Type: String
+    Default: 'false'
+    AllowedValues:
+    - 'true'
+    - 'false'
+
+Resources:
+  MyDB:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBName: !Ref DBName
+      AllocatedStorage: !Ref DBAllocatedStorage
+      DBInstanceClass: !Ref DBInstanceClass
+      Engine: MySQL
+      EngineVersion: 5.5
+      DBSecurityGroups: !Ref MyDBSecurityGroup
+      MasterUsername: !Ref DBUser
+      MasterUserPassword: !Ref DBPassword
+      MultiAZ: !Ref MultiAZ
+    #DeletionPolicy: !Ref SnapshotOnDelete 
+
+  MyVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value: Test-Vpc
+  
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: !Ref PrivateSubnet1CIDR
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      VpcId: !Ref MyVpc
+      Tags:
+         - Key: Name
+           Value: Private-TestSubnet1
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: !Ref PrivateSubnet2CIDR
+      AvailabilityZone: !Select [ 1, !GetAZs ]
+      VpcId: !Ref MyVpc
+      Tags:
+         - Key: Name
+           Value: Private-TestSubnet2
+
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      
+      GroupDescription: My SG with port 22 and 8080 inbound
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8080          
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+
+      Tags:
+        - Key: Name
+          Value: EC2-SG
+      VpcId: !Ref MyVpc  
+
+  MyDBSecurityGroup:
+    Type: AWS::RDS::SecurityGroup
+    Properties:
+      
+      GroupDescription: My SG with port 22 and 8080 inbound
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+      Tags:
+        - Key: Name
+          Value: DB-SG
+      VpcId: !Ref MyVpc  
+
+
+
+
+
+
