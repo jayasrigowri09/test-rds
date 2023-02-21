@@ -39,7 +39,7 @@
         "RdsDBSubnetGroup": {
             "Type": "AWS::RDS::DBSubnetGroup",
             "Properties": {
-                "Description": "rds dbsubnet group",
+                "DBSubnetGroupDescription": "rds dbsubnet group",
                 "SubnetIds": [
                     {
                         "Ref": "PrivateSubnet"
