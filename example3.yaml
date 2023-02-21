@@ -35,8 +35,8 @@ Parameters:
     Type: String
     Description: Please enter the IP address range for the VPC subnet
     Default: 10.0.1.0/24
-    
 
+    
 Resources:
   MyInstance:
     Type: AWS::EC2::Instance

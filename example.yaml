@@ -136,7 +136,9 @@ Resources:
   MyDBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      
+      DBSecuritygroupIngress:
+        EC2SecurityGroupName:
+          Ref: MySecurityGroup
       GroupDescription: My SG with port 22 and 8080 inbound
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -155,7 +157,7 @@ Resources:
       DBInstanceClass: !Ref DBInstanceClass
       Engine: MySQL
       EngineVersion: 5.5
-      DBSecurityGroups: !Ref MyDBSecurityGroup
+      DBSecurityGroups: !Ref DBSecurityGroup
       MasterUsername: !Ref DBUser
       MasterUserPassword: !Ref DBPassword
       MultiAZ: !Ref MultiAZ

@@ -1,47 +1,70 @@
 
 
----
+
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'This template deploys VPC with a pair of public and private subnets.
-  '
+Description: Create Ec2 Machine and vpc
+
 Parameters:
   KeyName:
     Type: AWS::EC2::KeyPair::KeyName
- 
-  ImageId:
-    Type: String
-    Default: ami-0e742cca61fb65051
 
   InstanceType:
     Type: String
     Default: t2.micro
-
+  
+  ImageId:
+    Type: String
+    Default: ami-00569e54da628d17c
+    
   MyAvailabilityZone:
     Description: Select the AZ
     Type: String
-    Default: ap-south-1a
-    
-  VPCCIDR:
+    Default: us-west-1a
+
+  VpcCIDR:
     Type: String
-    Description: Please enter the IP range (CIDR notation) for this VPC
-    MinLength: '9'
-    MaxLength: '18'
+    Description: Enter the IP range.
     Default: 10.0.0.0/16
-    
-  PublicSubnetCIDR:
+
+  PublicSubnet1CIDR:
     Type: String
-    Description: Please enter the IP address range for the VPC subnet
-    MinLength: '9'
-    MaxLength: '18'
+    Description: choose publicsubnetcidr
     Default: 10.0.0.0/24
-   
+
   PrivateSubnetCIDR:
     Type: String
     Description: Please enter the IP address range for the VPC subnet
-    MinLength: '9'
-    MaxLength: '18'
     Default: 10.0.1.0/24
+
+  DBName:
+    Default: MyDatabase
+    Description: The database name
+    Type: String
     
+  DBUser:
+    NoEcho: 'true'
+    Description: The database admin account username
+    Type: String
+    
+  DBPassword:
+    NoEcho: 'true'
+    Description: The database admin account password
+    Type: String
+
+  DBInstanceClass:
+    Description: The database instance type
+    Type: String
+    Default: db.t2.small
+
+  MultiAZ:
+    Description: Multi-AZ master database
+    Type: String
+    Default: 'false'
+    
+  DBAllocatedStorage:
+    Default: '5'
+    Description: The size of the database (Gb)
+     
 Resources:
   MyInstance:
     Type: AWS::EC2::Instance
@@ -51,8 +74,9 @@ Resources:
       KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref MySecurityGroup
+        - !Ref MyDBSecurityGroup
       AvailabilityZone: !Ref MyAvailabilityZone
-      SubnetId: !Ref PublicSubnet
+      SubnetId: !Ref PublicSubnet1
 
       Tags:
         - Key: Name
@@ -60,71 +84,63 @@ Resources:
   MyVpc:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: !Ref VPCCIDR
+      CidrBlock: !Ref VpcCIDR
       EnableDnsSupport: true
       EnableDnsHostnames: true
       InstanceTenancy: default
       Tags:
       - Key: Name
         Value: Test-Vpc
-          
+  
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
-      - Key: Name
-        Value: Test-IGW
-          
-  GatewayToInternet:
+        - Key: Name
+          Value: Test-IGW
+
+  InternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
-      InternetGatewayId:
-        Ref: InternetGateway
-      VpcId:
-        Ref: MyVpc
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref MyVpc
 
-  PublicSubnetRouteTable:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId:
-        Ref: MyVpc
-      Tags:
-      - Key: Name
-        Value: Public-SubnetRT
-          
-  PublicSubnetRoute:
-    Type: AWS::EC2::Route
-    DependsOn: GatewayToInternet
-    Properties:
-      RouteTableId:
-        Ref: PublicSubnetRouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId:
-        Ref: InternetGateway
-
-  PublicSubnet:
+  PublicSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId:
-        Ref: MyVpc
-      CidrBlock:
-        Ref: PublicSubnetCIDR
-      MapPublicIpOnLaunch: true
+      CidrBlock: !Ref PublicSubnet1CIDR
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      VpcId: !Ref MyVpc
       Tags:
-      - Key: Name
-        Value: Public-Subnet
-          
-  PublicSubnetRouteTableAssociation:
+         - Key: Name
+           Value: Public-TestSubnet1
+
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVpc
+      Tags:
+        - Key: Name
+          Value: Public-RouteTable
+
+  Route: 
+    DependsOn: InternetGatewayAttachment
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref RouteTable  
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway 
+
+  PublicSubnet1RoutetableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId:
-        Ref: PublicSubnetRouteTable
-      SubnetId:
-        Ref: PublicSubnet
+      RouteTableId: !Ref RouteTable
+      SubnetId:  !Ref PublicSubnet1
+
 
   AZANatGatewayEIP:
     Type: AWS::EC2::EIP
-    DependsOn: GatewayToInternet
+    DependsOn: InternetGateway
     Properties:
       Domain: Myvpc
 
@@ -136,7 +152,7 @@ Resources:
         - AZANatGatewayEIP
         - AllocationId
       SubnetId:
-        Ref: PublicSubnet
+        Ref: PublicSubnet1
 
   PrivateSubnetRouteTable:
     Type: AWS::EC2::RouteTable
@@ -177,7 +193,6 @@ Resources:
       SubnetId:
         Ref: PrivateSubnet
 
-
   MySecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -192,26 +207,32 @@ Resources:
           FromPort: 8080          
           ToPort: 8080
           CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
 
       Tags:
         - Key: Name
           Value: EC2-SG
       VpcId: !Ref MyVpc  
 
-Outputs:
-  InternetGateway:
-    Description: A reference to the IG
-    Value:
-      Ref: InternetGateway
-  VPC:
-    Description: A reference to the created VPC
-    Value:
-      Ref: MyVpc
-  PublicSubnet:
-    Description: A reference to the public subnet
-    Value:
-      Ref: PublicSubnet
-  PrivateSubnet:
-    Description: A reference to the private subnet
-    Value:
-      Ref: PrivateSubnet
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      DBSecurityGroupIngress:
+        EC2SecurityGroupName:
+          Ref: MySecurityGroup
+      
+
+  MyDBInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBName: !Ref DBName
+      AllocatedStorage: !Ref DBAllocatedStorage
+      DBInstanceClass: !Ref DBInstanceClass
+      Engine: MySQL
+      EngineVersion: 5.5
+      DBSecurityGroups: !Ref DBSecurityGroup
+      MasterUsername: !Ref DBUser
+      MasterUserPassword: !Ref DBPassword
+      MultiAZ: !Ref MultiAZ
