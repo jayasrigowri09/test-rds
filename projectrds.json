@@ -1,18 +1,13 @@
-
-
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "AWS CloudFormation Sample Template for creating an Amazon RDS DB instance: Sample template showing how to create a DB instance with Enhanced Monitoring enabled. **WARNING** This template creates an RDS DB instance. You will be billed for the AWS resources used if you create a stack from this template.",
-
-
-      "Parameters": {
+    "Parameters": {
         "DBPassword": {
             "Type": "String",
             "Description": "Db password must alphanumeric"
-
         }
-      },
-      "Resources": {
+    },
+    "Resources": {
         "RDSDEMOVPC": {
             "Type": "AWS::EC2::VPC",
             "Properties": {
@@ -23,116 +18,116 @@
                         "Value": "RDSDEMOVPC"
                     }
                 ]
-                    
-                }
-            }
-        },
-        "PrivateSubnet": {
-            "Type": "AWS::EC2::Subnet",
-            "Properties": {
-                "AvailabilityZone": "us-west-1a",
-                "VpcId": { "Ref": "RDSDEMOVPC" },
-                "CidrBlock": "192.168.1.0/16",
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "Private-Subnet"
-                    }
-                ]
-            }
-        },
-        "RdsDBSubnetGroup": {
-            "Type": "AWS::RDS::DBSubnetGroup",
-            "Properties": {
-                "Description": "rds dbsubnet group",
-                "SubnetIds": [
-                    {
-                        "Ref": "PrivateSubnet"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "Rds-DBSubnetGroup"
-                    }
-                ]
-            }
-        },
-        "RdsDBInstance" : {
-            "Type" : "AWS::RDS::DBInstance",
-            "Properties" : {
-                "DBSecurityGroups" : [
-                   {"Ref" : "MyDbSecurityByEC2SecurityGroup"}, {"Ref" : "MyDbSecurityByCIDRIPGroup"} ],
-                "AllocatedStorage" : "5",
-                "AllowMajorVersionUpgrade": "false",
-                "AllowMinorVersionUpgrade": "false",
-                "DBInstanceIdentifier": "MyRdsDemo",
-                "DBName": "TestRds",
-                "VpcSecurityGroups": [
-                    {
-                        "Ref": "RdsSecurityGroup"
-                    }
-                ],                
-                "DBSubnetGroupName": {
-                    "Fn::GetAtt": [
-                        "RdsDBSubnetGroup",
-                        "DBSubnetGroupName"
-                    ]
-                },
-                "DBInstanceClass" : "db.t2.small",
-                "Engine" : "MYSQL",
-                "EngineVersion": "5.6.13",
-                "MasterUsername" : "masterrds",
-                "MasterUserPassword" : {
-                    "Ref": "DBPassword"
-                },
-                "MultiAZ": "false",
-                "Port": "3306",
-                "PubliclyAccessible": "false",
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "MYRDSDEMO"
-                    }
-                ]
-            }
-        },
-        "RdsSecurityGroup": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "Description": " Ec2 Security group",
-                "SecurityGroupIngress": [
-                    {
-                        "InProtocol": "tcp",
-                        "FromPort": 3306,
-                        "ToPort": 3306,
-                        "CidrIp": "0.0.0.0/0"
-                    }
-                ],
-                "SecurityGroupEgress": [
-                    {
-                        "InProtocol": "tcp",
-                        "FromPort": 80,
-                        "ToPort": 80,
-                        "CidrIp": "0.0.0.0/0"
-                    }
-                ],
-                "VpcId": {
-                    "Ref": "RDSDEMOVPC"
-                },
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "RdsSecurityGroup"
-                    }
-                ]
             }
         }
-  
-
-           }
-        
-
-        
-    
-            
+    },
+    "PrivateSubnet": {
+        "Type": "AWS::EC2::Subnet",
+        "Properties": {
+            "AvailabilityZone": "us-west-1a",
+            "VpcId": {
+                "Ref": "RDSDEMOVPC"
+            },
+            "CidrBlock": "192.168.1.0/16",
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "Private-Subnet"
+                }
+            ]
+        }
+    },
+    "RdsDBSubnetGroup": {
+        "Type": "AWS::RDS::DBSubnetGroup",
+        "Properties": {
+            "Description": "rds dbsubnet group",
+            "SubnetIds": [
+                {
+                    "Ref": "PrivateSubnet"
+                }
+            ],
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "Rds-DBSubnetGroup"
+                }
+            ]
+        }
+    },
+    "RdsDBInstance": {
+        "Type": "AWS::RDS::DBInstance",
+        "Properties": {
+            "DBSecurityGroups": [
+                {
+                    "Ref": "MyDbSecurityByEC2SecurityGroup"
+                },
+                {
+                    "Ref": "MyDbSecurityByCIDRIPGroup"
+                }
+            ],
+            "AllocatedStorage": "5",
+            "AllowMajorVersionUpgrade": "false",
+            "AllowMinorVersionUpgrade": "false",
+            "DBInstanceIdentifier": "MyRdsDemo",
+            "DBName": "TestRds",
+            "VpcSecurityGroups": [
+                {
+                    "Ref": "RdsSecurityGroup"
+                }
+            ],
+            "DBSubnetGroupName": {
+                "Fn::GetAtt": [
+                    "RdsDBSubnetGroup",
+                    "DBSubnetGroupName"
+                ]
+            },
+            "DBInstanceClass": "db.t2.small",
+            "Engine": "MYSQL",
+            "EngineVersion": "5.6.13",
+            "MasterUsername": "masterrds",
+            "MasterUserPassword": {
+                "Ref": "DBPassword"
+            },
+            "MultiAZ": "false",
+            "Port": "3306",
+            "PubliclyAccessible": "false",
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "MYRDSDEMO"
+                }
+            ]
+        }
+    },
+    "RdsSecurityGroup": {
+        "Type": "AWS::EC2::SecurityGroup",
+        "Properties": {
+            "Description": " Ec2 Security group",
+            "SecurityGroupIngress": [
+                {
+                    "InProtocol": "tcp",
+                    "FromPort": 3306,
+                    "ToPort": 3306,
+                    "CidrIp": "0.0.0.0/0"
+                }
+            ],
+            "SecurityGroupEgress": [
+                {
+                    "InProtocol": "tcp",
+                    "FromPort": 80,
+                    "ToPort": 80,
+                    "CidrIp": "0.0.0.0/0"
+                }
+            ],
+            "VpcId": {
+                "Ref": "RDSDEMOVPC"
+            },
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "RdsSecurityGroup"
+                }
+            ]
+        }
+    }
+}
