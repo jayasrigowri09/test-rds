@@ -93,7 +93,7 @@
                 "GroupDescription": "Allow Rds connection",
                 "SecurityGroupIngress": [
                     {
-                        "InProtocol": "tcp",
+                        "IpProtocol": "tcp",
                         "FromPort": 3306,
                         "ToPort": 3306,
                         "CidrIp": "0.0.0.0/0"
@@ -101,7 +101,7 @@
                 ],
                 "SecurityGroupEgress": [
                     {
-                        "InProtocol": "tcp",
+                        "IpProtocol": "tcp",
                         "FromPort": 80,
                         "ToPort": 80,
                         "CidrIp": "0.0.0.0/0"
