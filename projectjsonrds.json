@@ -79,7 +79,7 @@
                 "AllocatedStorage": "5",
                 "DBInstanceIdentifier": "MyRdsDemo",
                 "DBName": "TestRds",
-                "VpcSecurityGroups": [
+                "VPCSecurityGroups": [
                     {
                         "Ref": "RdsSecurityGroup"
                     }
