@@ -56,14 +56,6 @@
         "RdsDBInstance": {
             "Type": "AWS::RDS::DBInstance",
             "Properties": {
-                "DBSecurityGroups": [
-                    {
-                        "Ref": "MyDbSecurityByEC2SecurityGroup"
-                    },
-                    {
-                        "Ref": "MyDbSecurityByCIDRIPGroup"
-                    }
-                ],
                 "AllocatedStorage": "5",
                 "AllowMajorVersionUpgrade": "false",
                 "AllowMinorVersionUpgrade": "false",
