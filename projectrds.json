@@ -47,7 +47,7 @@
                 "Description": "rds dbsubnet group",
                 "SubnetIds": [
                     {
-                        "Ref": "PrivateSubnet",
+                        "Ref": "PrivateSubnet"
                     }
                 ],
                 "Tags": [
