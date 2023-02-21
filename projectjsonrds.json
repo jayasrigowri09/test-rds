@@ -68,8 +68,7 @@
                 ],
                 "DBSubnetGroupName": {
                     "Fn::GetAtt": [
-                        "RdsDBSubnetGroup",
-                        "DBSubnetGroupName"
+                        "RdsDBSubnetGroup"
                     ]
                 },
                 "DBInstanceClass": "db.t2.small",
@@ -93,7 +92,7 @@
         "RdsSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
-                "Description": " Ec2 Security group",
+                "GroupDescription": "Allow Rds connection",
                 "SecurityGroupIngress": [
                     {
                         "InProtocol": "tcp",
