@@ -67,9 +67,7 @@
                     }
                 ],
                 "DBSubnetGroupName": {
-                    "Fn::GetAtt": [
-                        "RdsDBSubnetGroup"
-                    ]
+                    "Ref": "RdsDBSubnetGroup"
                 },
                 "DBInstanceClass": "db.t2.small",
                 "Engine": "MYSQL",
