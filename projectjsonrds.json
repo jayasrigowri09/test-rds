@@ -20,7 +20,7 @@
                 ]
             }
         },
-        "PrivateSubnet": {
+        "PrivateSubnet1": {
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "AvailabilityZone": "ap-south-1a",
@@ -31,18 +31,38 @@
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "Private-Subnet"
+                        "Value": "Private-Subnet1"
                     }
                 ]
             }
         },
+        "PrivateSubnet2": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "AvailabilityZone": "ap-south-1b",
+                "VpcId": {
+                    "Ref": "RDSDEMOVPC"
+                },
+                "CidrBlock": "192.168.2.0/16",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "Private-Subnet2"
+                    }
+                ]
+            }
+        },
+
         "RdsDBSubnetGroup": {
             "Type": "AWS::RDS::DBSubnetGroup",
             "Properties": {
                 "DBSubnetGroupDescription": "rds dbsubnet group",
                 "SubnetIds": [
                     {
-                        "Ref": "PrivateSubnet"
+                        "Ref": "PrivateSubnet1"
+                    },
+                    {
+                        "Ref": "PrivateSubnet2"
                     }
                 ],
                 "Tags": [
