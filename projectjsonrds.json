@@ -56,7 +56,7 @@
         "RdsDBSubnetGroup": {
             "Type": "AWS::RDS::DBSubnetGroup",
             "Properties": {
-                "DBSubnetGroupDescription": "rds dbsubnet group",
+                "DBSubnetGroupDescription": "Subnet for rds",
                 "SubnetIds": [
                     {
                         "Ref": "PrivateSubnet1"
@@ -77,8 +77,6 @@
             "Type": "AWS::RDS::DBInstance",
             "Properties": {
                 "AllocatedStorage": "5",
-                "AllowMajorVersionUpgrade": "false",
-                "AllowMinorVersionUpgrade": "false",
                 "DBInstanceIdentifier": "MyRdsDemo",
                 "DBName": "TestRds",
                 "VpcSecurityGroups": [
