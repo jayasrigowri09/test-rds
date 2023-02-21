@@ -46,7 +46,6 @@ Resources:
       KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref MySecurityGroup
-        - !Ref MyDBSecurityGroup
       AvailabilityZone: !Ref MyAvailabilityZone
       SubnetId: !Ref PublicSubnet1
 
@@ -185,13 +184,3 @@ Resources:
           Value: EC2-SG
       VpcId: !Ref MyVpc  
 
-  MyDBSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      
-      GroupDescription: My SG with port 22 and 8080 inbound
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 3306
-          ToPort: 3306
-          CidrIp: 0.0.0.0/0
