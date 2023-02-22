@@ -9,7 +9,7 @@ Parameters:
     Description: select north california
     Default: us-west-1a
 
-  AmiID:
+  AmiId:
     Type: String
     Description: The ID of the AMI
     Default: ami-0e742cca61fb65051 
@@ -40,7 +40,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       AvailabilityZone: !Ref AvailabilityZone
-      ImageId: ami-0d5eff06f840b45e9 
+      ImageId: !Ref AmiId
       InstanceType: t2.micro
       KeyName: !Ref KeyName
       SecurityGroupIds:
