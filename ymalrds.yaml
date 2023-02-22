@@ -11,8 +11,8 @@ Parameters:
 
   AmiID:
     Type: String
-    Description: "The ID of the AMI."
-    Default:
+    Description: The ID of the AMI
+    Default: ami-0e742cca61fb65051 
 
   KeyName:
     Type: AWS::EC2::KeyPair::KeyName
