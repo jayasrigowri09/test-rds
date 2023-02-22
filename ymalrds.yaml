@@ -54,7 +54,7 @@ Resources:
       AllocatedStorage: "5"
       DBInstanceClass: db.t2.small
       Engine: MYSQL
-      EngineVersion: 8.0.17
+      EngineVersion: 8.0.28
       MasterUsername: !Ref DBUsername
       MasterUserPassword: !Ref DBPassword
       Tags:
