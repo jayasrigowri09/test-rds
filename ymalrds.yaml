@@ -67,8 +67,8 @@ Resources:
       GroupDescription: Allow Database inbound traffic
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 3309
-          ToPort: 3309
+          FromPort: 3306
+          ToPort: 3306
           SourceSecurityGroupName:
             Ref: WebAppSecurityGroup
       Tags:
