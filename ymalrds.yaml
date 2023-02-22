@@ -44,7 +44,7 @@ Resources:
       InstanceType: t2.micro
       KeyName: !Ref KeyPairName
       SecurityGroupIds:
-        - !Ref WebSecurityGroup
+        - !Ref WebAppSecurityGroup
 
   WebAppDatabase:
     Type: AWS::RDS::DBInstance
@@ -76,7 +76,7 @@ Resources:
         - Key: Name
           Value: DBEC2-SG
     
-  WebSecurityGroup:
+  WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: "Allow HttPS and SSH"
