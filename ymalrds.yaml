@@ -50,14 +50,31 @@ Resources:
     Type: AWS::RDS::DBInstance
     Properties:
       DBInstanceIdentifier: !Ref DBInstanceIdentifier
+      VPCSecurityGroups:
+        - !GetAtt DBEC2SecurityGroup.GroupId
       AllocatedStorage: "5"
       DBInstanceClass: db.t3.micro
-      Engine: postgres
+      Engine: MYSQL
       MasterUsername: !Ref DBUsername
       MasterUserPassword: !Ref DBPassword
       Tags:
         - Key: Name
           Value: MyDBInstance
+
+
+  DBEC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: Allow Database inbound traffic
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3309
+          ToPort: 3309
+          SourceSecurityGroupName:
+            Ref: WebAppSecurityGroup
+      Tags:
+        - Key: Name
+          Value: DBEC2-SG
     
 
   WebSecurityGroup:
