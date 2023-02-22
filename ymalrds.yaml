@@ -6,17 +6,16 @@ Description: Create Ec2 Machine and Rds
 Parameters:
   AvailabilityZone:
     Type: String
-    Description: select north california
+    Description: select availability zone
     Default: ap-south-1a
 
   AmiId:
     Type: String
-    Description: The ID of the AMI
+    Description: The ID of the Instance
     Default: ami-0e742cca61fb65051 
 
   KeyPairName:
     Type: AWS::EC2::KeyPair::KeyName
-    Description: select keypair
 
   DBInstanceIdentifier:
     Type: String
@@ -53,8 +52,9 @@ Resources:
       VPCSecurityGroups:
         - !GetAtt DBEC2SecurityGroup.GroupId
       AllocatedStorage: "5"
-      DBInstanceClass: db.t3.micro
+      DBInstanceClass: db.t2.small
       Engine: MYSQL
+      EngineVersion: 8.0.17
       MasterUsername: !Ref DBUsername
       MasterUserPassword: !Ref DBPassword
       Tags:
