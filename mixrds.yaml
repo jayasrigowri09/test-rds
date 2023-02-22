@@ -1,0 +1,108 @@
+
+
+
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create Ec2 Machine and Rds
+
+Parameters:
+  AvailabilityZone:
+    Type: String
+    Description: select availability zone
+    Default: ap-south-1a
+
+  AmiId:
+    Type: String
+    Description: The ID of the Instance
+    Default: ami-0e742cca61fb65051 
+
+  KeyPairName:
+    Type: AWS::EC2::KeyPair::KeyName
+
+  DBInstanceIdentifier:
+    Type: String
+    Default: "webapp-db"
+
+  DBUsername:
+    Type: String
+    NoEcho: "true"
+    Description: Username for Mysql database access
+    Default: "Mysqldb"
+  DBPassword:
+    NoEcho: "true"
+    Description: Password Mysql database access
+    Type: String
+    MinLength: "8"
+    MaxLength: "41"
+    AllowedPattern: "[a-zA-Z0-9]*"
+    ConstraintDescription: Must contain only alphanumeric characters.
+
+Resources:
+  WebAppInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZone
+      ImageId: !Ref AmiId
+      InstanceType: t2.micro
+      KeyName: !Ref KeyPairName
+      SecurityGroupIds:
+        - !Ref WebAppSecurityGroup
+
+  WebAppDatabase:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: !Ref DBInstanceIdentifier
+      VPCSecurityGroups:
+        - !GetAtt DBEC2SecurityGroup.GroupId
+      AllocatedStorage: "5"
+      DBInstanceClass: db.t2.small
+      Engine: MYSQL
+      EngineVersion: 8.0.28
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      Tags:
+        - Key: Name
+          Value: MyDBInstance
+
+  DBEC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: Allow Database inbound traffic
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupName:
+            Ref: WebAppSecurityGroup
+      Tags:
+        - Key: Name
+          Value: DBEC2-SG
+    
+  WebAppSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Allow HttPS and SSH"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  WebAppEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      InstanceId: !Ref WebAppInstance
+      Tags:
+        - Key: Name
+          Value: EC2-EIP
+
+
