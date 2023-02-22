@@ -38,6 +38,47 @@ Parameters:
     ConstraintDescription: Must contain only alphanumeric characters.
 
 Resources:
+  WebAppVpc:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: 192.168.0.0/16
+      Tags:
+        - Key: Name
+          Value: RDSDEMOVPC
+
+  PrivateSubnet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: ap-south-1a
+      VpcId:
+        Ref: WebAppVpc
+      CidrBlock: 192.168.1.0/24
+      Tags:
+        - Key: Name
+          Value: Private-Subnet1
+
+  PrivateSubnet2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      AvailabilityZone: ap-south-1b
+      VpcId:
+        Ref: WebAppVpc
+      CidrBlock: 192.168.2.0/24
+      Tags:
+        - Key: Name
+          Value: Private-Subnet2
+
+  WebAppDBSubnetGroup:
+    Type: 'AWS::RDS::DBSubnetGroup'
+    Properties:
+      DBSubnetGroupDescription: Subnet for rds
+      SubnetIds:
+        - Ref: PrivateSubnet1
+        - Ref: PrivateSubnet2
+      Tags:
+        - Key: Name
+          Value: Rds-DBSubnetGroup
+
   WebAppInstance:
     Type: AWS::EC2::Instance
     Properties:
@@ -54,6 +95,8 @@ Resources:
       DBInstanceIdentifier: !Ref DBInstanceIdentifier
       VPCSecurityGroups:
         - !GetAtt DBEC2SecurityGroup.GroupId
+      DBSubnetGroupName:
+        Ref: WebAppDBSubnetGroup
       AllocatedStorage: "5"
       DBInstanceClass: db.t2.small
       Engine: MYSQL
@@ -77,6 +120,7 @@ Resources:
       Tags:
         - Key: Name
           Value: DBEC2-SG
+      VpcId: !Ref WebAppVpc
     
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
