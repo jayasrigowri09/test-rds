@@ -143,7 +143,7 @@ Resources:
   WebAppEIP:
     Type: AWS::EC2::EIP
     Properties:
-      Domain: vpc
+      Domain: !Ref WebAppVpc
       InstanceId: !Ref WebAppInstance
       Tags:
         - Key: Name
