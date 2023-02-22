@@ -39,6 +39,7 @@ Resources:
   WebAppInstance:
     Type: AWS::EC2::Instance
     Properties:
+      AvailabilityZone: !Ref AvailabilityZone
       ImageId: ami-0d5eff06f840b45e9 
       InstanceType: t2.micro
       KeyName: !Ref KeyName
