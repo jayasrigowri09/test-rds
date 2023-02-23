@@ -31,10 +31,15 @@ Parameters:
     Description: choose publicsubnetcidr
     Default: 10.0.0.0/24
 
-  PrivateSubnetCIDR:
+  PrivateSubnetCIDR1:
     Type: String
     Description: Please enter the IP address range for the VPC subnet
     Default: 10.0.1.0/24
+
+  PrivateSubnetCIDR2:
+    Type: String
+    Description: Please enter the IP address range for the VPC subnet
+    Default: 10.0.2.0/24
 
   DBInstanceIdentifier:
     Type: String
@@ -173,7 +178,7 @@ Resources:
       SubnetId:
         Ref: PublicSubnet1
 
-  PrivateSubnetRouteTable:
+  PrivateSubnetRouteTable1:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId:
@@ -181,8 +186,17 @@ Resources:
       Tags:
       - Key: Name
         Value: Private-Subnet-RT
+
+  PrivateSubnetRouteTable2:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: WebAppVpc
+      Tags:
+      - Key: Name
+        Value: Private-Subnet-RT2
           
-  PrivateSubnetRoute:
+  PrivateSubnetRoute1:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId:
@@ -191,27 +205,58 @@ Resources:
       NatGatewayId:
         Ref: AZANatGateway
 
-  PrivateSubnet:
+  PrivateSubnetRoute2:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: PrivateSubnetRouteTableAssociation2
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: AZANatGateway
+
+  PrivateSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
-      #AvailabilityZone: us-west-1c
+      AvailabilityZone: us-west-1c
       VpcId:
         Ref: WebAppVpc
       CidrBlock:
-        Ref: PrivateSubnetCIDR
+        Ref: PrivateSubnetCIDR1
       MapPublicIpOnLaunch: false
       Tags:
       - Key: Name
         Value: Private-Subnet
+
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-west-1f
+      VpcId:
+        Ref: WebAppVpc
+      CidrBlock:
+        Ref: PrivateSubnetCIDR2
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: Private-Subnet2
         
 
-  PrivateSubnetRouteTableAssociation:
+  PrivateSubnetRouteTableAssociation1:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId:
-        Ref: PrivateSubnetRouteTable
+        Ref: PrivateSubnetRouteTable1
       SubnetId:
-        Ref: PrivateSubnet
+        Ref: PrivateSubnet1
+
+  PrivateSubnetRouteTableAssociation2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: PrivateSubnetRouteTable2
+      SubnetId:
+        Ref: PrivateSubnet2
 
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -238,7 +283,8 @@ Resources:
     Properties:
       DBSubnetGroupDescription: Subnet for rds
       SubnetIds:
-        - Ref: PrivateSubnet
+        - Ref: PrivateSubnet1
+        - Ref: PrivateSubnet2
       Tags:
         - Key: Name
           Value: Rds-DBSubnetGroup
