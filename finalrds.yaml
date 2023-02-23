@@ -88,6 +88,9 @@ Resources:
       KeyName: !Ref KeyPairName
       SecurityGroupIds:
         - !Ref WebAppSecurityGroup
+      SubnetIds:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
     
 
 
