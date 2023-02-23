@@ -244,6 +244,17 @@ Resources:
       SubnetId:
         Ref: PrivateSubnet2
 
+  WebAppDBSubnetGroup:
+    Type: 'AWS::RDS::DBSubnetGroup'
+    Properties:
+      DBSubnetGroupDescription: Subnet for rds
+      SubnetIds:
+        - Ref: PrivateSubnet1
+        - Ref: PrivateSubnet2
+      Tags:
+        - Key: Name
+          Value: Rds-DBSubnetGroup
+
   MySecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -278,7 +289,7 @@ Resources:
       Engine: MySQL
       EngineVersion: 5.5
       DBSecurityGroups: !Ref DBSecurityGroup
-      DBSubnetGroup: 
+      DBSubnetGroup: !Ref WebAppDBSubnetGroup
       MasterUsername: !Ref DBUser
       MasterUserPassword: !Ref DBPassword
       MultiAZ: !Ref MultiAZ
