@@ -124,12 +124,7 @@ Resources:
           Value: DBEC2-SG
       VpcId: !Ref WebAppVpc
 
-  DBSecurityGroup:
-    Type: AWS::RDS::DBSecurityGroup
-    Properties:
-      DBSecurityGroupIngress:
-        EC2SecurityGroupName: !Ref WebAppSecurityGroup
-      GroupDescription: database access
+
     
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
