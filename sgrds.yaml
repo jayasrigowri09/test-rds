@@ -73,6 +73,7 @@ Parameters:
   DBAllocatedStorage:
     Default: '5'
     Description: The size of the database (Gb)
+    Type: String
      
 Resources:
   MyInstance:
