@@ -107,6 +107,7 @@ Resources:
       Tags:
         - Key: Name
           Value: DBEC2-SG
+      VpcId: !Ref WebAppVpc
 
   WebAppVpc:
     Type: 'AWS::EC2::VPC'
