@@ -96,7 +96,7 @@ Resources:
       DBInstanceIdentifier: !Ref DBInstanceIdentifier
       DBSecurityGroup: !Ref DBSecurityGroup
       VPCSecurityGroups:
-        Ref: WebAppSecurityGroup
+        - GetAtt: WebAppSecurityGroup.GroupId
       DBSubnetGroupName:
         Ref: WebAppDBSubnetGroup
       AllocatedStorage: "5"
