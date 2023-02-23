@@ -108,7 +108,7 @@ Resources:
         - Key: Name
           Value: MyDBInstance
 
-DBEC2SecurityGroup:
+  DBEC2SecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties: 
       GroupDescription: Allow Database inbound traffic
