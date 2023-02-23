@@ -19,7 +19,7 @@ Parameters:
   MyAvailabilityZone:
     Description: Select the AZ
     Type: String
-    Default: us-est-1b
+    Default: us-east-1b
 
   VpcCIDR:
     Type: String
