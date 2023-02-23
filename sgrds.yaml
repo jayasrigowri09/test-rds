@@ -128,7 +128,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       CidrBlock: !Ref PublicSubnet1CIDR
-      AvailabilityZone: !Select [ 0, !GetAZs ]
+      AvailabilityZone: !Select [ 1, !GetAZs ]
       VpcId: !Ref WebAppVpc
       Tags:
          - Key: Name
