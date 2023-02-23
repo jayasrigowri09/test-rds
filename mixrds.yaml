@@ -108,7 +108,7 @@ Resources:
         - Key: Name
           Value: MyDBInstance
 
-  DBEC2SecurityGroup:
+DBEC2SecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties: 
       GroupDescription: Allow Database inbound traffic
@@ -116,14 +116,11 @@ Resources:
         - IpProtocol: tcp
           FromPort: 3306
           ToPort: 3306
-         
-          SourceSecurityGroupName: !Ref WebAppSecurityGroup
-            
+          SourceSecurityGroupName:
+            Ref: WebAppSecurityGroup
       Tags:
         - Key: Name
           Value: DBEC2-SG
-      
-
 
     
   WebAppSecurityGroup:
