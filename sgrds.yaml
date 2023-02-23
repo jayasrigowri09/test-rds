@@ -137,7 +137,7 @@ Resources:
   RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref MyVpc
+      VpcId: !Ref WebAppVpc
       Tags:
         - Key: Name
           Value: Public-RouteTable
