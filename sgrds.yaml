@@ -295,16 +295,6 @@ Resources:
       MultiAZ: !Ref MultiAZ
        
 
-  WebAppDBSubnetGroup:
-    Type: 'AWS::RDS::DBSubnetGroup'
-    Properties:
-      DBSubnetGroupDescription: Subnet for rds
-      SubnetIds:
-        - Ref: PrivateSubnet1
-        - Ref: PrivateSubnet2
-      Tags:
-        - Key: Name
-          Value: Rds-DBSubnetGroup
   
    #DBSecurityGroup:
     #Type: AWS::RDS::DBSecurityGroup
