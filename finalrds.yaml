@@ -98,8 +98,7 @@ Resources:
       DBSubnetGroupName:
         Ref: WebAppDBSubnetGroup
       AllocatedStorage: "5"
-      VpcSecurityGroups:
-        - !GetAtt webAppSecurityGroup.GroupId
+      VpcSecurityGroups: !Ref WebAppSecurityGroup
       DBInstanceClass: db.t2.small
       Engine: MYSQL
       EngineVersion: 8.0.28
