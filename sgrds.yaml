@@ -62,7 +62,7 @@ Resources:
       InstanceType: !Ref InstanceType
       KeyName: !Ref KeyName
       SecurityGroupIds:
-        - !Ref MySecurityGroup
+        - !Ref WebAppSecurityGroup
       AvailabilityZone: !Ref MyAvailabilityZone
       SubnetId: !Ref PublicSubnet1
 
@@ -76,6 +76,8 @@ Resources:
       DBInstanceIdentifier: !Ref DBInstanceIdentifier
       VPCSecurityGroups:
         - !GetAtt DBEC2SecurityGroup.GroupId
+      DBSubnetGroup:
+        Ref: WebAppDBSubnetGroup
       AllocatedStorage: "5"
       DBInstanceClass: db.t2.small
       Engine: MYSQL
@@ -210,7 +212,7 @@ Resources:
       SubnetId:
         Ref: PrivateSubnet
 
-  MySecurityGroup:
+  WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       
@@ -229,4 +231,18 @@ Resources:
         - Key: Name
           Value: EC2-SG
       VpcId: !Ref WebAppVpc
+
+  WebAppDBSubnetGroup:
+    Type: 'AWS::RDS::DBSubnetGroup'
+    Properties:
+      DBSubnetGroupDescription: Subnet for rds
+      SubnetIds:
+        - Ref: PrivateSubnet1
+      Tags:
+        - Key: Name
+          Value: Rds-DBSubnetGroup
+
+ 
+
+ 
 
