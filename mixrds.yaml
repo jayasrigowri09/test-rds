@@ -86,8 +86,8 @@ Resources:
       ImageId: !Ref AmiId
       InstanceType: t2.micro
       KeyName: !Ref KeyPairName
-      SecurityGroupIds:
-        - !Ref DBEC2SecurityGroup
+      #SecurityGroupIds:
+       # - !Ref DBEC2SecurityGroup
 
 
   WebAppDatabase:
