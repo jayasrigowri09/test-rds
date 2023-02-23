@@ -87,7 +87,8 @@ Resources:
       InstanceType: t2.micro
       KeyName: !Ref KeyPairName
       SecurityGroupIds:
-        - !Ref WebAppSecurityGroup
+        - !Ref DBEC2SecurityGroup
+
 
   WebAppDatabase:
     Type: AWS::RDS::DBInstance
@@ -122,23 +123,23 @@ Resources:
           Value: DBEC2-SG
       VpcId: !Ref WebAppVpc
     
-  WebAppSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: "Allow HttPS and SSH"
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 0.0.0.0/0
+  #WebAppSecurityGroup:
+   # Type: AWS::EC2::SecurityGroup
+    #Properties:
+     # GroupDescription: "Allow HttPS and SSH"
+      #SecurityGroupIngress:
+       # - IpProtocol: tcp
+        #  FromPort: 80
+         # ToPort: 80
+          #CidrIp: 0.0.0.0/0
+        #- IpProtocol: tcp
+         # FromPort: 443
+          #ToPort: 443
+          #CidrIp: 0.0.0.0/0
+        #- IpProtocol: tcp
+         # FromPort: 22
+          #ToPort: 22
+          #CidrIp: 0.0.0.0/0
 
   WebAppEIP:
     Type: AWS::EC2::EIP
