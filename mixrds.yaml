@@ -95,7 +95,7 @@ Resources:
     Properties:
       DBInstanceIdentifier: !Ref DBInstanceIdentifier
       #DBSecurityGroup: !Ref DBSecurityGroup
-      VPCSecurityGroups:
+      VpcSecurityGroups:
         - GetAtt: WebAppSecurityGroup.GroupId
       DBSubnetGroupName:
         Ref: WebAppDBSubnetGroup
