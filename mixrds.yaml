@@ -96,7 +96,7 @@ Resources:
       DBInstanceIdentifier: !Ref DBInstanceIdentifier
       DBSecurityGroup: !Ref DBSecurityGroup
       VPCSecurityGroups:
-        - !GetAtt DBEC2SecurityGroup.GroupId
+        Ref: WebAppSecurityGroup
       DBSubnetGroupName:
         Ref: WebAppDBSubnetGroup
       AllocatedStorage: "5"
@@ -109,14 +109,15 @@ Resources:
         - Key: Name
           Value: MyDBInstance
 
-  DBEC2SecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties: 
-      GroupDescription: Allow Database inbound traffic
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 3306
-          ToPort: 3306
+  #DBEC2SecurityGroup:
+   # Type: AWS::EC2::SecurityGroup
+    #Properties: 
+     # GroupDescription: Allow Database inbound traffic
+      #SecurityGroupIngress:
+       # - IpProtocol: tcp
+        #  FromPort: 3306
+         # ToPort: 3306
+          #CidrIp: 0.0.0.0/0
           #SourceSecurityGroupName: !Ref WebAppSecurityGroup
             
       Tags:
@@ -134,7 +135,7 @@ Resources:
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: "Allow HttPS and SSH"
+      GroupDescription: "Allow HttPS and SSH and database"
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 80
@@ -147,6 +148,10 @@ Resources:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
           CidrIp: 0.0.0.0/0
 
   WebAppEIP:
