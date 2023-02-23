@@ -116,11 +116,13 @@ Resources:
         - IpProtocol: tcp
           FromPort: 3306
           ToPort: 3306
+          CidrIp: 0.0.0.0/0
           SourceSecurityGroupName:
             Ref: WebAppSecurityGroup
       Tags:
         - Key: Name
           Value: DBEC2-SG
+      VpcId: !Ref WebAppVpc
 
     
   WebAppSecurityGroup:

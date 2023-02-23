@@ -75,6 +75,7 @@ Resources:
       Tags:
         - Key: Name
           Value: DBEC2-SG
+      
     
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
