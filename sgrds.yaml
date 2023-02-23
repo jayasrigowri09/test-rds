@@ -110,8 +110,7 @@ Resources:
   DBSecurityGroup:
     Type: AWS::RDS::DBSecurityGroup
     Properties:
-      EC2VpcId: 
-        Ref: WebAppVpc
+      
       DBSecurityGroupIngress:
         EC2SecurityGroupName: !Ref WebAppSecurityGroup
       GroupDescription: database access   
@@ -134,8 +133,6 @@ Resources:
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
-   
-
 
   WebAppEIP:
     Type: AWS::EC2::EIP
