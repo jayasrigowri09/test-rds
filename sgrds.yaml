@@ -237,7 +237,7 @@ Resources:
         
 
   PrivateSubnetRouteTableAssociation2:
-    Type: AWS::EC2::SubnetRouteTableAssociation
+    Type: 'AWS::EC2::SubnetRouteTableAssociation'
     Properties:
       RouteTableId:
         Ref: PrivateSubnetRouteTable2
@@ -256,7 +256,7 @@ Resources:
           Value: Rds-DBSubnetGroup
 
   MySecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+    Type: 'AWS::EC2::SecurityGroup'
     Properties:
       
       GroupDescription: My SG with port 22 and 8080 inbound
@@ -281,7 +281,7 @@ Resources:
   
 
   MyDBInstance:
-    Type: AWS::RDS::DBInstance
+    Type: 'AWS::RDS::DBInstance'
     Properties:
       DBName: !Ref DBName
       AllocatedStorage: !Ref DBAllocatedStorage
