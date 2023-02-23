@@ -202,7 +202,7 @@ Resources:
       RouteTableId:
         Ref: PrivateSubnetRouteTable1
       SubnetId:
-        Ref: PrivateSubnet
+        Ref: PrivateSubnet1
 
 
   PrivateSubnetRouteTable2:
