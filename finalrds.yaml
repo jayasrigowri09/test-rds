@@ -21,7 +21,7 @@ Parameters:
 
   DBInstanceIdentifier:
     Type: String
-    Default: "webapp-db"
+    Default: "webapp-database"
 
   DBUsername:
     Type: String
