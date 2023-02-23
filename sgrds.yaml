@@ -83,7 +83,7 @@ Resources:
       KeyName: !Ref KeyName
       SecurityGroupIds:
         - !Ref MySecurityGroup
-        - !Ref MyDBSecurityGroup
+       
       AvailabilityZone: !Ref MyAvailabilityZone
       SubnetId: !Ref PublicSubnet1
 
@@ -267,13 +267,7 @@ Resources:
           Value: EC2-SG
       VpcId: !Ref MyVpc  
 
-  DBSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      DBSecurityGroupIngress:
-        EC2SecurityGroupName:
-          Ref: MySecurityGroup
-      
+  
 
   MyDBInstance:
     Type: AWS::RDS::DBInstance
