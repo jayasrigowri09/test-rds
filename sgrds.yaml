@@ -14,12 +14,12 @@ Parameters:
   
   ImageId:
     Type: String
-    Default: ami-00569e54da628d17c
+    Default: ami-0dfcb1ef8550277af
     
   MyAvailabilityZone:
     Description: Select the AZ
     Type: String
-    Default: us-west-1c
+    Default: us-est-1a
 
   VpcCIDR:
     Type: String
@@ -194,7 +194,7 @@ Resources:
   PrivateSubnet:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: us-west-1c
+      #AvailabilityZone: us-west-1c
       VpcId:
         Ref: WebAppVpc
       CidrBlock:
