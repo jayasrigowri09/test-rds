@@ -185,7 +185,7 @@ Resources:
         Ref: WebAppVpc
       Tags:
       - Key: Name
-        Value: Private-Subnet-RT
+        Value: Private-Subnet-RT1
 
   PrivateSubnetRouteTable2:
     Type: AWS::EC2::RouteTable
@@ -200,7 +200,7 @@ Resources:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId:
-        Ref: PrivateSubnetRouteTable
+        Ref: PrivateSubnetRouteTableAssociation1
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId:
         Ref: AZANatGateway
