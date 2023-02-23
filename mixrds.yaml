@@ -9,12 +9,12 @@ Parameters:
   AvailabilityZone:
     Type: String
     Description: select availability zone
-    Default: ap-south-1a
+    Default: us-west-1a
 
   AmiId:
     Type: String
     Description: The ID of the Instance
-    Default: ami-0e742cca61fb65051 
+    Default: ami-00569e54da628d17c
 
   KeyPairName:
     Type: AWS::EC2::KeyPair::KeyName
@@ -49,7 +49,7 @@ Resources:
   PrivateSubnet1:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      AvailabilityZone: ap-south-1a
+      AvailabilityZone: us-west-1a
       VpcId:
         Ref: WebAppVpc
       CidrBlock: 192.168.1.0/24
@@ -60,7 +60,7 @@ Resources:
   PrivateSubnet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      AvailabilityZone: ap-south-1b
+      AvailabilityZone: us-wesst-1b
       VpcId:
         Ref: WebAppVpc
       CidrBlock: 192.168.2.0/24
