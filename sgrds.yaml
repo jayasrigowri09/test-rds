@@ -109,6 +109,7 @@ Resources:
 
   DBSecurityGroup:
     Type: AWS::RDS::DBSecurityGroup
+    EC2VPC: !Ref WebAppVpc
     Properties:
       DBSecurityGroupIngress:
         EC2SecurityGroupName: !Ref WebAppSecurityGroup
