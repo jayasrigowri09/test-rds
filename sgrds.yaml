@@ -200,7 +200,7 @@ Resources:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId:
-        Ref: PrivateSubnetRouteTableAssociation1
+        Ref: PrivateSubnetRouteTable1
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId:
         Ref: AZANatGateway
@@ -209,7 +209,7 @@ Resources:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId:
-        Ref: PrivateSubnetRouteTableAssociation2
+        Ref: PrivateSubnetRouteTable2
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId:
         Ref: AZANatGateway
@@ -217,7 +217,7 @@ Resources:
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: us-west-1c
+      AvailabilityZone: us-east-1c
       VpcId:
         Ref: WebAppVpc
       CidrBlock:
@@ -231,7 +231,7 @@ Resources:
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: us-west-1f
+      AvailabilityZone: us-east-1f
       VpcId:
         Ref: WebAppVpc
       CidrBlock:
