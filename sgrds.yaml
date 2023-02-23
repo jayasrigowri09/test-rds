@@ -290,7 +290,7 @@ Resources:
       Engine: MySQL
       EngineVersion: 5.5
       VpcSecurityGroup: 
-        - Fn::GetAtt: MySecurityGroup
+        - GetAtt: MySecurityGroup
       DBSubnetGroup: 
         !Ref WebAppDBSubnetGroup
       MasterUsername: !Ref DBUser
