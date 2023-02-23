@@ -60,7 +60,7 @@ Resources:
   PrivateSubnet2:
     Type: 'AWS::EC2::Subnet'
     Properties:
-      AvailabilityZone: us-wesst-1c
+      AvailabilityZone: us-west-1c
       VpcId:
         Ref: WebAppVpc
       CidrBlock: 192.168.2.0/24
