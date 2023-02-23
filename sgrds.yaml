@@ -289,8 +289,10 @@ Resources:
       DBInstanceClass: !Ref DBInstanceClass
       Engine: MySQL
       EngineVersion: 5.5
-      DBSecurityGroups: !Ref MySecurityGroup
-      DBSubnetGroup: !Ref WebAppDBSubnetGroup
+      VpcSecurityGroup: 
+        - Fn::GetAtt: MySecurityGroup
+      DBSubnetGroup: 
+        !Ref WebAppDBSubnetGroup
       MasterUsername: !Ref DBUser
       MasterUserPassword: !Ref DBPassword
       MultiAZ: !Ref MultiAZ
