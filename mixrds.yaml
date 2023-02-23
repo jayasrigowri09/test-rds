@@ -117,7 +117,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: 3306
           ToPort: 3306
-          SourceSecurityGroupName: !Ref WebAppSecurityGroup
+          #SourceSecurityGroupName: !Ref WebAppSecurityGroup
             
       Tags:
         - Key: Name
