@@ -1,27 +1,44 @@
 
 
 
-
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create Ec2 Machine and Rds
+Description: Create Ec2 Machine and vpc
 
 Parameters:
-  AvailabilityZone:
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+
+  InstanceType:
     Type: String
-    Description: select availability zone
+    Default: t2.micro
+  
+  ImageId:
+    Type: String
+    Default: ami-00569e54da628d17c
+    
+  MyAvailabilityZone:
+    Description: Select the AZ
+    Type: String
     Default: us-west-1a
 
-  AmiId:
+  VpcCIDR:
     Type: String
-    Description: The ID of the Instance
-    Default: ami-00569e54da628d17c
+    Description: Enter the IP range.
+    Default: 10.0.0.0/16
 
-  KeyPairName:
-    Type: AWS::EC2::KeyPair::KeyName
+  PublicSubnet1CIDR:
+    Type: String
+    Description: choose publicsubnetcidr
+    Default: 10.0.0.0/24
+
+  PrivateSubnetCIDR:
+    Type: String
+    Description: Please enter the IP address range for the VPC subnet
+    Default: 10.0.1.0/24
 
   DBInstanceIdentifier:
     Type: String
-    Default: "webapp-database"
+    Default: "webapp-db"
 
   DBUsername:
     Type: String
@@ -36,68 +53,30 @@ Parameters:
     MaxLength: "41"
     AllowedPattern: "[a-zA-Z0-9]*"
     ConstraintDescription: Must contain only alphanumeric characters.
-
+    
 Resources:
-  WebAppVpc:
-    Type: 'AWS::EC2::VPC'
-    Properties:
-      CidrBlock: 192.168.0.0/16
-      Tags:
-        - Key: Name
-          Value: RDSDEMOVPC
-
-  PrivateSubnet1:
-    Type: 'AWS::EC2::Subnet'
-    Properties:
-      AvailabilityZone: us-west-1a
-      VpcId:
-        Ref: WebAppVpc
-      CidrBlock: 192.168.1.0/24
-      Tags:
-        - Key: Name
-          Value: Private-Subnet1
-
-  PrivateSubnet2:
-    Type: 'AWS::EC2::Subnet'
-    Properties:
-      AvailabilityZone: us-west-1c
-      VpcId:
-        Ref: WebAppVpc
-      CidrBlock: 192.168.2.0/24
-      Tags:
-        - Key: Name
-          Value: Private-Subnet2
-
-  WebAppDBSubnetGroup:
-    Type: 'AWS::RDS::DBSubnetGroup'
-    Properties:
-      DBSubnetGroupDescription: Subnet for rds
-      SubnetIds:
-        - Ref: PrivateSubnet1
-        - Ref: PrivateSubnet2
-      Tags:
-        - Key: Name
-          Value: Rds-DBSubnetGroup
-
-  WebAppInstance:
+  MyInstance:
     Type: AWS::EC2::Instance
     Properties:
-      AvailabilityZone: !Ref AvailabilityZone
-      ImageId: !Ref AmiId
-      InstanceType: t2.micro
-      KeyName: !Ref KeyPairName
+      ImageId: !Ref ImageId
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
       SecurityGroupIds:
-        - !Ref WebAppSecurityGroup
+        - !Ref MySecurityGroup
+      AvailabilityZone: !Ref MyAvailabilityZone
+      SubnetId: !Ref PublicSubnet1
 
+      Tags:
+        - Key: Name
+          Value: Demoec2  
 
   WebAppDatabase:
     Type: AWS::RDS::DBInstance
     Properties:
       DBInstanceIdentifier: !Ref DBInstanceIdentifier
-      DBSubnetGroupName:
-        Ref: WebAppDBSubnetGroup
+      VPCSecurityGroups:
+        - !GetAtt DBEC2SecurityGroup.GroupId
       AllocatedStorage: "5"
-      #DBSecurityGroup: !Ref DBSecurityGroup
       DBInstanceClass: db.t2.small
       Engine: MYSQL
       EngineVersion: 8.0.28
@@ -107,39 +86,147 @@ Resources:
         - Key: Name
           Value: MyDBInstance
 
-  DBSecurityGroup:
-    Type: AWS::RDS::DBSecurityGroup
-    Properties:
-      DBSecurityGroupIngress:
-        EC2SecurityGroupName: !Ref WebAppSecurityGroup
-      GroupDescription: database access   
-  
-    
-  WebAppSecurityGroup:
+
+  DBEC2SecurityGroup:
     Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: "Allow HttPS and SSH and database"
+    Properties: 
+      GroupDescription: Allow Database inbound traffic
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0 
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 0.0.0.0/0
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupName:
+            Ref: WebAppSecurityGroup
+      Tags:
+        - Key: Name
+          Value: DBEC2-SG
+
+  WebAppVpc:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      Tags:
+        - Key: Name
+          Value: RDSDEMOVPC 
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: Test-IGW
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref WebAppVpc
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: !Ref PublicSubnet1CIDR
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+      VpcId: !Ref WebAppVpc
+      Tags:
+         - Key: Name
+           Value: Public-TestSubnet1
+
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVpc
+      Tags:
+        - Key: Name
+          Value: Public-RouteTable
+
+  Route: 
+    DependsOn: InternetGatewayAttachment
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref RouteTable  
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway 
+
+  PublicSubnet1RoutetableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref RouteTable
+      SubnetId:  !Ref PublicSubnet1
+
+
+  AZANatGatewayEIP:
+    Type: AWS::EC2::EIP
+    DependsOn: InternetGateway
+    Properties:
+      Domain: WebAppVpc
+
+  AZANatGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+        - AZANatGatewayEIP
+        - AllocationId
+      SubnetId:
+        Ref: PublicSubnet1
+
+  PrivateSubnetRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: WebAppVpc
+      Tags:
+      - Key: Name
+        Value: Private-Subnet-RT
+          
+  PrivateSubnetRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: PrivateSubnetRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: AZANatGateway
+
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: WebAppVpc
+      CidrBlock:
+        Ref: PrivateSubnetCIDR
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: Private-Subnet
+        
+
+  PrivateSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: PrivateSubnetRouteTable
+      SubnetId:
+        Ref: PrivateSubnet
+
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      
+      GroupDescription: My SG with port 22 and 8080 inbound
+      SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8080          
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
 
-  WebAppEIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: !Ref WebAppVpc
-      InstanceId: !Ref WebAppInstance
       Tags:
         - Key: Name
-          Value: EC2-EIP
-
+          Value: EC2-SG
+      VpcId: !Ref WebAppVpc
 
