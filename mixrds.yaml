@@ -94,9 +94,8 @@ Resources:
     Type: AWS::RDS::DBInstance
     Properties:
       DBInstanceIdentifier: !Ref DBInstanceIdentifier
-      #DBSecurityGroup: !Ref DBSecurityGroup
-      DBEC2SecurityGroups:
-        - GetAtt: WebAppSecurityGroup.GroupId
+      VpcSecurityGroups:
+        - !GetAtt DBEC2SecurityGroup.GroupId
       DBSubnetGroupName:
         Ref: WebAppDBSubnetGroup
       AllocatedStorage: "5"
@@ -109,28 +108,28 @@ Resources:
         - Key: Name
           Value: MyDBInstance
 
-  #DBEC2SecurityGroup:
-   # Type: AWS::EC2::SecurityGroup
-    #Properties: 
-     # GroupDescription: Allow Database inbound traffic
-      #SecurityGroupIngress:
-       # - IpProtocol: tcp
-        #  FromPort: 3306
-         # ToPort: 3306
-          #CidrIp: 0.0.0.0/0
-          #SourceSecurityGroupName: !Ref WebAppSecurityGroup
+  DBEC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupDescription: Allow Database inbound traffic
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIp: 0.0.0.0/0
+          SourceSecurityGroupName: !Ref WebAppSecurityGroup
             
-      #Tags:
-       # - Key: Name
-        #  Value: DBEC2-SG
-      #VpcId: !Ref WebAppVpc
+      Tags:
+        - Key: Name
+          Value: DBEC2-SG
+      VpcId: !Ref WebAppVpc
 
-  #DBSecurityGroup:
-   # Type: AWS::RDS::DBSecurityGroup
-    #Properties:
-     # DBSecurityGroupIngress:
-      #  EC2SecurityGroupName: !Ref WebAppSecurityGroup
-      #GroupDescription: database access
+  DBSecurityGroup:
+    Type: AWS::RDS::DBSecurityGroup
+    Properties:
+      DBSecurityGroupIngress:
+        EC2SecurityGroupName: !Ref WebAppSecurityGroup
+      GroupDescription: database access
     
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -142,17 +141,10 @@ Resources:
           ToPort: 80
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 3306
-          ToPort: 3306
-          CidrIp: 0.0.0.0/0
+       
 
   WebAppEIP:
     Type: AWS::EC2::EIP
