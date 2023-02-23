@@ -237,7 +237,7 @@ Resources:
     Properties:
       DBSubnetGroupDescription: Subnet for rds
       SubnetIds:
-        - Ref: PrivateSubnet1
+        - Ref: PrivateSubnet
       Tags:
         - Key: Name
           Value: Rds-DBSubnetGroup
