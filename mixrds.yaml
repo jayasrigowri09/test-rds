@@ -68,6 +68,54 @@ Resources:
         - Key: Name
           Value: Private-Subnet2
 
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: Test-Igw
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: 10.0.1.0/24
+      
+      Tags:
+        - Key: Name
+          Value: Public-Subnet-Test
+
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Public-RT
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnet
+
   WebAppDBSubnetGroup:
     Type: 'AWS::RDS::DBSubnetGroup'
     Properties:
@@ -88,7 +136,7 @@ Resources:
       KeyName: !Ref KeyPairName
       SecurityGroupIds:
         - !Ref WebAppSecurityGroup
-        - !Ref DBEC2SecurityGroup
+          !Ref DBEC2SecurityGroup
 
   WebAppDatabase:
     Type: AWS::RDS::DBInstance
@@ -141,13 +189,6 @@ Resources:
       VpcId: !Ref WebAppVpc
        
 
-  WebAppEIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: !Ref WebAppVpc
-      InstanceId: !Ref WebAppInstance
-      Tags:
-        - Key: Name
-          Value: EC2-EIP
+ 
 
 
