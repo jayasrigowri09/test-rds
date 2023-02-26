@@ -143,8 +143,8 @@ Resources:
     Type: AWS::RDS::DBInstance
     Properties:
       DBInstanceIdentifier: !Ref DBInstanceIdentifier
-      DBEC2SecurityGroups:
-        - !GetAtt DBEC2SecurityGroup.GroupId
+      DBSecurityGroups: !Ref DBEC2SecurityGroup
+       # - !GetAtt DBEC2SecurityGroup.GroupId
       DBSubnetGroupName:
         Ref: WebAppDBSubnetGroup
       AllocatedStorage: "5"
