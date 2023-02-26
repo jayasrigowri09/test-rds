@@ -144,7 +144,7 @@ Resources:
     Properties:
       DBInstanceIdentifier: !Ref DBInstanceIdentifier
       DBSecurityGroups: 
-        Ref: DBEC2SecurityGroup
+        Ref: DBSecurityGroup
        # - !GetAtt DBEC2SecurityGroup.GroupId
       DBSubnetGroupName:
         Ref: WebAppDBSubnetGroup
@@ -158,8 +158,8 @@ Resources:
         - Key: Name
           Value: MyDBInstance
 
-  DBEC2SecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+  DBSecurityGroup:
+    Type: AWS::RDS::SecurityGroup
     Properties: 
       GroupDescription: Allow Database inbound traffic
       SecurityGroupIngress:
