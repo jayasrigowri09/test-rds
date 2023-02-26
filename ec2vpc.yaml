@@ -4,6 +4,10 @@ Description:  This template deploys a VPC in either us-east1 or us-west-2
 
 
 Parameters:
+
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    
   ImageId:
     Type: String
     Default: ami-00569e54da628d17c
@@ -97,6 +101,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: !Ref ImageId
+      KeyName: !Ref KeyName
       AvailabilityZone: !Ref MyAvailabilityZone
       InstanceType: t2.micro
       SubnetId: !Ref PublicSubnet
