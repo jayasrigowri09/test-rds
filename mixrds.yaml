@@ -159,7 +159,7 @@ Resources:
           Value: MyDBInstance
 
   DBSecurityGroup:
-    Type: AWS::RDS::SecurityGroup
+    Type: AWS::RDS::DBSecurityGroup
     Properties: 
       GroupDescription: Allow Database inbound traffic
       SecurityGroupIngress:
