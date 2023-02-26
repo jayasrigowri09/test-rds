@@ -202,9 +202,9 @@ Resources:
       AvailabilityZone: !Ref MyAvailabilityZone
       InstanceType: t2.micro
       SubnetId: !Ref PublicSubnet
-      SecurityGroupIds: 
+      SecurityGroupIds: !Ref RDSAccessSecurityGroup
        
-          !Ref RDSAccessSecurityGroup
+          
       Tags:
        - Key: Name
          Value: Test-Ec2 
