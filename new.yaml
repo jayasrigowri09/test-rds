@@ -138,7 +138,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref RDSDEMOVPC
-      AvailabilityZone: us-west-1b
+      AvailabilityZone: us-west-1a
       CidrBlock: 10.0.2.0/24
       Tags:
         - Key: Name
