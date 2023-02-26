@@ -114,6 +114,7 @@ Resources:
 
   PrivateRoute:            
     Type: AWS::EC2::Route
+    Dependson: AttachGateway
     Properties:
       RouteTableId: !Ref PrivateRouteTable
       DestinationCidrBlock: 0.0.0.0/0
