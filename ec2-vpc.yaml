@@ -61,7 +61,7 @@ Resources:
       VpcId: !Ref VPC
       InternetGatewayId: !Ref InternetGateway
 
-  PublicSubnet-Test:
+  PublicSubnet:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
@@ -90,11 +90,11 @@ Resources:
   PublicSubnetARouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref PublicSubnet-Test
+      SubnetId: !Ref PublicSubnet
       RouteTableId: !Ref PublicRouteTable 
 
   
-  PrivateSubnet-Test:
+  PrivateSubnet:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
@@ -122,7 +122,7 @@ Resources:
   PrivateSubnetARouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref PrivateSubnet-Test
+      SubnetId: !Ref PrivateSubnet
       RouteTableId: !Ref PrivateRouteTable
 
 
