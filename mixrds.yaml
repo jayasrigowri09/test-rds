@@ -136,7 +136,7 @@ Resources:
       KeyName: !Ref KeyPairName
       SecurityGroupIds:
         - !Ref WebAppSecurityGroup
-      SubnetIds: !Ref PublicSubnet
+      SubnetId: !Ref PublicSubnet
 
           
   WebAppDatabase:
