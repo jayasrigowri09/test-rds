@@ -71,7 +71,7 @@ Resources:
     Type: AWS::RDS::DBSecurityGroup
     Properties:
       DBSecurityGroupIngress:
-        CidrIp: 0.0.0.0/0
+        #CidrIp: 0.0.0.0/0
         DbSecurityGroupName:
           Ref: RdsSecurityGroup
         EC2SecurityGroupId: 
