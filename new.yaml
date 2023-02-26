@@ -219,7 +219,10 @@ Resources:
       AvailabilityZone: !Ref MyAvailabilityZone
       InstanceType: t2.micro
       SubnetId: !Ref PublicSubnet
-      SecurityGroupIds: !Ref RDSAccessSecurityGroup
+      SecurityGroupIds: 
+        - !Ref RDSAccessSecurityGroup
+          !Ref WebServerSecurityGroup
+
        
           
       Tags:
