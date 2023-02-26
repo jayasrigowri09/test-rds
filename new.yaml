@@ -103,11 +103,7 @@ Resources:
         FromPort: 3306
         ToPort: 3306
         CidrIp: 0.0.0.0/0
-      SecurityGroupEgress:
-      - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
-        CidrIp: 0.0.0.0/0
+      
       VpcId:
         Ref: RDSDEMOVPC
       Tags:
@@ -128,7 +124,7 @@ Resources:
       InternetGatewayId: !Ref InternetGateway
       VpcId: !Ref RDSDEMOVPC
 
-  PublicSubnet:
+  PublicSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref RDSDEMOVPC
@@ -136,30 +132,62 @@ Resources:
       CidrBlock: 10.0.1.0/24
       Tags:
         - Key: Name
-          Value: Public-Subnet-Test
+          Value: Public-Subnet-Test1
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref RDSDEMOVPC
+      AvailabilityZone: us-west-1b
+      CidrBlock: 10.0.2.0/24
+      Tags:
+        - Key: Name
+          Value: Public-Subnet-Test2
 
 
-  PublicRouteTable:
+  PublicRouteTable1:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref RDSDEMOVPC
       Tags:
         - Key: Name
-          Value: Public-RT
+          Value: Public-RT1
 
-  PublicRoute:
+  PublicRouteTable2:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref RDSDEMOVPC
+      Tags:
+        - Key: Name
+          Value: Public-RT2
+
+  PublicRoute1:
     Type: AWS::EC2::Route
     DependsOn: InternetGatewayAttachment
     Properties:
-      RouteTableId: !Ref PublicRouteTable
+      RouteTableId: !Ref PublicRouteTable1
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
 
-  PublicSubnet1RouteTableAssociation:
+  PublicRoute2:
+    Type: AWS::EC2::Route
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable2
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1RouteTableAssociation1:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId: !Ref PublicRouteTable
-      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref PublicRouteTable1
+      SubnetId: !Ref PublicSubnet1
+
+  PublicSubnet1RouteTableAssociation2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable2
+      SubnetId: !Ref PublicSubnet2
 
   WebAppInstance:
     Type: AWS::EC2::Instance
