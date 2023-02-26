@@ -6,7 +6,7 @@ Parameters:
   AvailabilityZone:
     Type: String
     Description: select availability zone
-    Default: us-west-1a
+    Default: us-west-1c
 
   AmiId:
     Type: String
