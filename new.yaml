@@ -35,6 +35,8 @@ Resources:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: 192.168.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
       Tags:
       - Key: Nmae
         Value: RDSDEMOVPC
@@ -168,6 +170,9 @@ Resources:
       SecurityGroupIds:
         - !Ref WebAppSecurityGroup
       SubnetId: !Ref PublicSubnet
+      Tags:
+       - Key: Name
+         Value: Demo-ec2
 
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
