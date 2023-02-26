@@ -75,7 +75,7 @@ Resources:
        # DbSecurityGroupName:
         #  Ref: RdsSecurityGroup
         EC2SecurityGroupId: 
-          - !GetAtt "RdsSecurityGroup.GroupId"
+          - !GetAtt "WebServerSecurityGroup.GroupId"
        # EC2SecurityGroupownerId:
         EC2SecurityGroupName:
             Ref: WebServerSecurityGroup
