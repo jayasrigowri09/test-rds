@@ -95,8 +95,7 @@ Resources:
       ToPort:
         Ref: TcpPort
       SourceSecurityGroupId:
-        Ref: RDSAccessSecurityGroup
-
+        Ref: WebServerSecurityGroup
   WebServerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
