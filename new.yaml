@@ -162,7 +162,7 @@ Resources:
 
 
 
-WebAppInstance:
+  WebAppInstance:
     Type: AWS::EC2::Instance
     Properties:
       AvailabilityZone: !Ref AvailabilityZone
@@ -173,7 +173,7 @@ WebAppInstance:
         - !Ref WebAppSecurityGroup
       SubnetId: !Ref PublicSubnet
 
-WebAppSecurityGroup:
+  WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: "Allow HttPS and SSH and database"
