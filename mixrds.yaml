@@ -51,7 +51,7 @@ Resources:
     Properties:
       AvailabilityZone: us-west-1a
       VpcId:
-        Ref: WebAppVpc
+        Ref: VPC
       CidrBlock: 192.168.1.0/24
       Tags:
         - Key: Name
@@ -62,7 +62,7 @@ Resources:
     Properties:
       AvailabilityZone: us-west-1c
       VpcId:
-        Ref: WebAppVpc
+        Ref: VPC
       CidrBlock: 192.168.2.0/24
       Tags:
         - Key: Name
