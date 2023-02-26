@@ -198,7 +198,7 @@ Resources:
       KeyName: !Ref KeyPairName
       SecurityGroupIds:
         - !Ref WebAppSecurityGroup
-      SubnetId: !Ref PublicSubnet
+      SubnetId: !Ref PublicSubnet1
       Tags:
        - Key: Name
          Value: Demo-ec2
