@@ -1,0 +1,147 @@
+
+
+AWSTemplateFormatVersion: 2010-09-09
+Description: This CloudFormation template deploy rds
+
+Parameters:
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+
+  InstanceType:
+    Type: String
+    Default: t2.micro
+  
+  ImageId:
+    Type: String
+    Default: ami-00569e54da628d17c
+    
+  MyAvailabilityZone:
+    Description: Select the AZ
+    Type: String
+    Default: us-west-1a
+
+Resources:
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref ImageId
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !Ref MySecurityGroup
+      AvailabilityZone: !Ref MyAvailabilityZone
+      SubnetId: !Ref PublicSubnet
+
+      Tags:
+        - Key: Name
+          Value: Test-Ec2
+
+
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.1.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+      - Key: Name
+        Value:  Test-Vpc
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: Test-IGW
+    DependsOn: VPC
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicSubnet-Test:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs ]    
+      Tags:
+      - Key: Name
+        Value: Public-Subnet
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: Public-Routetable
+        
+  PublicRoute:  
+    Type: AWS::EC2::Route
+    DependsOn: AttachGateway
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      CidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway 
+
+  PublicSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet-Test
+      RouteTableId: !Ref PublicRouteTable 
+
+  
+  PrivateSubnet-Test:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs ]    
+      Tags:
+      - Key: Name
+        Value: Private-Subnet
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: Private-RouteTable
+
+  PrivateRoute:            
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      CidrBlock: 0.0.0.0/0
+
+
+  PrivateSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet-Test
+      RouteTableId: !Ref PrivateRouteTable
+
+
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: My SG with port 22 and 8080 inbound
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8080          
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+
+      Tags:
+        - Key: Name
+          Value: EC2-SG
+      VpcId: !Ref Vpc
+  
