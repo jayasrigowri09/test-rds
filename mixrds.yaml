@@ -136,6 +136,8 @@ Resources:
       KeyName: !Ref KeyPairName
       SecurityGroupIds:
         - !Ref WebAppSecurityGroup
+      SubnetIds: !Ref PublicSubnet
+
           
   WebAppDatabase:
     Type: AWS::RDS::DBInstance
