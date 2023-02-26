@@ -176,7 +176,6 @@ Resources:
       Tags:
         - Key: Name
           Value: DBEC2-SG
-      VpcId: !Ref VPC
       
     
   WebAppSecurityGroup:
