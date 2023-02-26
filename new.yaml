@@ -95,7 +95,7 @@ Resources:
       ToPort:
         Ref: TcpPort
       SourceSecurityGroupId:
-        Ref: WebServerSecurityGroup
+        Ref: RDSAccessSecurityGroup
   
   DbInstance:
     Type: AWS::RDS::DBInstance
@@ -192,23 +192,7 @@ Resources:
     Properties:
       RouteTableId: !Ref PublicRouteTable
       SubnetId: !Ref PublicSubnet
-      
-  WebServerSecurityGroup:
-    Type: 'AWS::EC2::SecurityGroup'
-    Properties:
-      GroupDescription: Enable HTTP from 0.0.0.0/0
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 0.0.0.0/0
-
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 0.0.0.0/0
-        
-      VpcId: !Ref VPC 
+  
       
   EC2Instance:
     Type: AWS::EC2::Instance
@@ -219,7 +203,7 @@ Resources:
       InstanceType: t2.micro
       SubnetId: !Ref PublicSubnet
       SecurityGroupIds: 
-        - !Ref WebServerSecurityGroup
+       
           !Ref RDSAccessSecurityGroup
       Tags:
        - Key: Name
