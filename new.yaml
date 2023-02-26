@@ -168,7 +168,7 @@ Resources:
     DependsOn: InternetGatewayAttachment
     Properties:
       RouteTableId: !Ref PublicRouteTable1
-      DestinationCidrBlock: 0.0.0.0/0
+      DestinationCidrBlock: 71.140.148.247/32
       GatewayId: !Ref InternetGateway
 
   PublicRoute2:
@@ -176,7 +176,7 @@ Resources:
     DependsOn: InternetGatewayAttachment
     Properties:
       RouteTableId: !Ref PublicRouteTable2
-      DestinationCidrBlock: 0.0.0.0/0
+      DestinationCidrBlock: 71.140.148.247/32
       GatewayId: !Ref InternetGateway
 
   PublicSubnet1RouteTableAssociation1:
@@ -219,4 +219,7 @@ Resources:
           ToPort: 22
           CidrIp: 71.140.148.247/32
       VpcId: !Ref RDSDEMOVPC
+      Tags:
+        - Key: Name
+          Value: Ec2-Sg
 
