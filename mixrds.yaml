@@ -166,6 +166,11 @@ Resources:
         - IpProtocol: tcp
           FromPort: 3306
           ToPort: 3306
+          
+          EC2SecurityGroupName: 
+            Ref: "WebServerSecurityGroup"
+ 
+
           #CidrIp: 0.0.0.0/0
           #SourceSecurityGroupName:
            # Ref: WebAppSecurityGroup
