@@ -37,7 +37,8 @@ Resources:
     Properties:
       DBSubnetGroupDescription: Subnet for rdsdb
       SubnetIds:
-      - Ref: PrivateSubnet
+      - Ref: PrivateSubnet1
+      - Ref: PrivateSubnet2
       Tags:
       - Key: Name
         Value: Rds-DBSubnetGroup
@@ -104,7 +105,7 @@ Resources:
           Value: Public-Subnet-Test
 
 
-  PrivateSubnet:
+  PrivateSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
@@ -112,7 +113,19 @@ Resources:
       CidrBlock: 10.0.11.0/24
       Tags:
         - Key: Name
-          Value: Private-Subnet-Test 
+          Value: Private-Subnet-Test1
+
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: ap-south-1b
+      VpcId:
+        Ref: RDSDEMOVPC
+      CidrBlock: 192.168.2.0/24
+      Tags:
+      - Key: Name
+        Value: Private-Subnet-Test2
 
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
