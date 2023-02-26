@@ -30,12 +30,12 @@ Resources:
       EnableDnsHostnames: true
       Tags:
         - Key: Name
-          Value: Test-vpc
+          Value: Test-Vpc
 
   RdsDBSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
-      DBSubnetGroupDescription: Subnet for rds
+      DBSubnetGroupDescription: Subnet for rdsdb
       SubnetIds:
       - Ref: PrivateSubnet
       Tags:
