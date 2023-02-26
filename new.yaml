@@ -128,6 +128,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref RDSDEMOVPC
+      MapPublicIpOnLaunch: true
       AvailabilityZone: us-east-1d
       CidrBlock: 10.0.1.0/24
       Tags:
@@ -139,6 +140,7 @@ Resources:
     Properties:
       VpcId: !Ref RDSDEMOVPC
       AvailabilityZone: us-east-1b
+      MapPublicIpOnLaunch: true
       CidrBlock: 10.0.2.0/24
       Tags:
         - Key: Name
