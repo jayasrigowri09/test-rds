@@ -95,7 +95,7 @@ Resources:
       ToPort:
         Ref: TcpPort
       SourceSecurityGroupId:
-        Ref: RDSAccessSecurityGroup
+        Ref: WebServerSecurityGroup
   
   DbInstance:
     Type: AWS::RDS::DBInstance
