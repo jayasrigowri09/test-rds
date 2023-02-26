@@ -132,7 +132,7 @@ Resources:
     Properties:
       VpcId: !Ref RDSDEMOVPC
       AvailabilityZone: us-west-1a
-      CidrBlock: 192.168.3.0/24
+      CidrBlock: 192.168.0.0/24
       Tags:
         - Key: Name
           Value: Public-Subnet-Test
