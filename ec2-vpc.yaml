@@ -53,7 +53,7 @@ Resources:
       Tags:
         - Key: Name
           Value: Test-IGW
-    DependsOn: VPC
+    
 
   AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
@@ -143,5 +143,5 @@ Resources:
       Tags:
         - Key: Name
           Value: EC2-SG
-      VpcId: !Ref Vpc
+      VpcId: !Ref VPC
   
