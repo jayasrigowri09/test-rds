@@ -72,10 +72,10 @@ Resources:
     Properties:
       DBSecurityGroupIngress:
         #CidrIp: 0.0.0.0/0
-        DbSecurityGroupName:
-          Ref: RdsSecurityGroup
+       # DbSecurityGroupName:
+        #  Ref: RdsSecurityGroup
         EC2SecurityGroupId: 
-          - !GetAtt WebServerSecurityGroup.GroupId
+          - !GetAtt RdsSecurityGroup.GroupId
        # EC2SecurityGroupownerId:
         EC2SecurityGroupName:
             Ref: WebServerSecurityGroup
