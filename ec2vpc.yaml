@@ -75,9 +75,9 @@ Resources:
         FromPort: 3306
         ToPort: 3306
         SourceSecurityGroupId: !Ref MySecurityGroup
-    Tags:
-      - Key: Name
-        Value: Rds-Sg
+      Tags:
+        - Key: Name
+          Value: Rds-Sg
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
