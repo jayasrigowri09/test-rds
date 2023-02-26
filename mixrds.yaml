@@ -38,7 +38,7 @@ Parameters:
     ConstraintDescription: Must contain only alphanumeric characters.
 
 Resources:
-  WebAppVpc:
+  VPC:
     Type: 'AWS::EC2::VPC'
     Properties:
       CidrBlock: 192.168.0.0/16
@@ -170,8 +170,7 @@ Resources:
       Tags:
         - Key: Name
           Value: DBEC2-SG
-      VpcId: !Ref WebAppVpc
-
+      
     
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -186,7 +185,7 @@ Resources:
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
-      VpcId: !Ref WebAppVpc
+      VpcId: !Ref VPC
        
 
  
