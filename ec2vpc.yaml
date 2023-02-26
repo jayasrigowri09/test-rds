@@ -119,7 +119,7 @@ Resources:
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: ap-south-1b
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
       VpcId:
         Ref: VPC
       CidrBlock: 192.168.2.0/24
