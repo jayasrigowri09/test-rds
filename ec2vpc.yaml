@@ -71,14 +71,10 @@ Resources:
     Type: AWS::RDS::DBSecurityGroup
     Properties:
       DBSecurityGroupIngress:
-        #CidrIp: 0.0.0.0/0
-       # DbSecurityGroupName:
-        #  Ref: RdsSecurityGroup
-        EC2SecurityGroupId: 
-          - !GetAtt "WebServerSecurityGroup.GroupId"
-       # EC2SecurityGroupownerId:
-        EC2SecurityGroupName:
-            Ref: WebServerSecurityGroup
+        - EC2SecurityGroupId: sg-b0ff1111
+          EC2SecurityGroupOwnerId: '111122223333'
+        - EC2SecurityGroupId: sg-ffd722222
+          EC2SecurityGroupOwnerId: '111122223333'
       GroupDescription: Frontend Access
 
   RdsSecurityGroup:
