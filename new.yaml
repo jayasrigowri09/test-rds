@@ -94,21 +94,7 @@ Resources:
       Tags:
       - Key: Name
         Value: MYRDSDEMO
-  RdsSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Allow Rds connection
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 3306
-        ToPort: 3306
-        CidrIp: 71.140.148.247/32
-      
-      VpcId:
-        Ref: RDSDEMOVPC
-      Tags:
-      - Key: Name
-        Value: Rds-sg
+ 
 
 
   InternetGateway:
@@ -168,7 +154,7 @@ Resources:
     DependsOn: InternetGatewayAttachment
     Properties:
       RouteTableId: !Ref PublicRouteTable1
-      DestinationCidrBlock: 71.140.148.247/32
+      DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
 
   PublicRoute2:
@@ -176,7 +162,7 @@ Resources:
     DependsOn: InternetGatewayAttachment
     Properties:
       RouteTableId: !Ref PublicRouteTable2
-      DestinationCidrBlock: 71.140.148.247/32
+      DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
 
   PublicSubnet1RouteTableAssociation1:
@@ -204,6 +190,21 @@ Resources:
       Tags:
        - Key: Name
          Value: Demo-ec2
+
+  RdsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow Rds connection
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 3306
+        ToPort: 3306
+        CidrIp: 71.140.148.247/32     
+      VpcId:
+        Ref: RDSDEMOVPC
+      Tags:
+      - Key: Name
+        Value: Rds-sg
 
   WebAppSecurityGroup:
     Type: AWS::EC2::SecurityGroup
