@@ -50,8 +50,9 @@ Resources:
       AllocatedStorage: '5'
       DBInstanceIdentifier: MyRdsDemo
       DBName: TestRds
-      VPCSecurityGroups:
-      - !GetAtt RdsSecurityGroup.GroupId
+      DBSecurityGroups:
+        -Ref: DBSecurityGroup
+     # - !GetAtt RdsSecurityGroup.GroupId
       DBSubnetGroupName:
         Ref: RdsDBSubnetGroup
       DBInstanceClass: db.t2.small
@@ -60,25 +61,35 @@ Resources:
       MasterUsername: masterrds
       MasterUserPassword:
         Ref: DBPassword
-      MultiAZ: 'false'
-      Port: '3306'
-      PubliclyAccessible: 'false'
+
+
       Tags:
       - Key: Name
         Value: MYRDSDEMO
 
-  RdsSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+  DBSecurityGroup:
+    Type: AWS::RDS::DBSecurityGroup
     Properties:
-      GroupDescription: Allow Rds connection
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: '3306'
-        ToPort: '3306'
-        SourceSecurityGroupId: !Ref WebServerSecurityGroup
-      Tags:
-        - Key: Name
-          Value: Rds-Sg
+      DBSecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '3306'
+          ToPort: '3306'
+
+          EC2SecurityGroupName:
+             Ref: WebServerSecurityGroup
+      GroupDescription: Frontend Access
+
+ # RdsSecurityGroup:
+  ## Properties:
+    #  GroupDescription: Allow Rds connection
+     # SecurityGroupIngress:
+      #- IpProtocol: tcp
+       # FromPort: '3306'
+        #ToPort: '3306'
+       # SourceSecurityGroupId: !Ref WebServerSecurityGroup
+      #Tags:
+       # - Key: Name
+        #  Value: Rds-Sg
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -158,6 +169,12 @@ Resources:
           FromPort: '80'
           ToPort: '80'
           CidrIp: 0.0.0.0/0
+
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 0.0.0.0/0
+        
       VpcId: !Ref VPC 
       
   EC2Instance:
