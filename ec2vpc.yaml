@@ -51,7 +51,7 @@ Resources:
       DBInstanceIdentifier: MyRdsDemo
       DBName: TestRds
       VPCSecurityGroups:
-      - Ref: RdsSecurityGroup
+      - !GetAtt RdsSecurityGroup.GroupId
       DBSubnetGroupName:
         Ref: RdsDBSubnetGroup
       DBInstanceClass: db.t2.small
@@ -73,8 +73,8 @@ Resources:
       GroupDescription: Allow Rds connection
       SecurityGroupIngress:
       - IpProtocol: tcp
-        FromPort: 3306
-        ToPort: 3306
+        FromPort: '3306'
+        ToPort: '3306'
         SourceSecurityGroupId: !Ref WebServerSecurityGroup
       Tags:
         - Key: Name
