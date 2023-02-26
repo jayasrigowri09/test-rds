@@ -82,6 +82,7 @@ Resources:
       GroupDescription: Frontend Access
 
   RdsSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow Rds connection
       SecurityGroupIngress:
