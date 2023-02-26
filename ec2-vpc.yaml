@@ -84,7 +84,7 @@ Resources:
     DependsOn: AttachGateway
     Properties:
       RouteTableId: !Ref PublicRouteTable
-      CidrBlock: 0.0.0.0/0
+      DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway 
 
   PublicSubnetARouteTableAssociation:
@@ -116,7 +116,9 @@ Resources:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref PrivateRouteTable
-      CidrBlock: 0.0.0.0/0
+      DestinationCidrBlock: 0.0.0.0/0
+
+      
 
 
   PrivateSubnetARouteTableAssociation:
