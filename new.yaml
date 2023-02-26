@@ -6,7 +6,7 @@ Parameters:
   AvailabilityZone:
     Type: String
     Description: select availability zone
-    Default: us-east-1a
+    Default: us-east-1d
 
   AmiId:
     Type: String
@@ -128,7 +128,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref RDSDEMOVPC
-      AvailabilityZone: us-east-1b
+      AvailabilityZone: us-east-1d
       CidrBlock: 10.0.1.0/24
       Tags:
         - Key: Name
@@ -138,7 +138,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref RDSDEMOVPC
-      AvailabilityZone: us-east-1a
+      AvailabilityZone: us-east-1b
       CidrBlock: 10.0.2.0/24
       Tags:
         - Key: Name
