@@ -131,8 +131,8 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref RDSDEMOVPC
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]
-      CidrBlock: 192.168.0.0/24
+      AvailabilityZone: us-west-1a
+      CidrBlock: 192.168.3.0/24
       Tags:
         - Key: Name
           Value: Public-Subnet-Test
