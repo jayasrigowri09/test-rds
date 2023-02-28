@@ -1,8 +1,8 @@
 {
-    "AWSTemplateFormateVersion": "2010-09-09",
+    "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "create ec2 and rds",
 
-    "parameters" : {
+    "Parameters" : {
         "AvailabilityZone" : {
             "Type" : "String",
             "Description" : "Select Azs",
