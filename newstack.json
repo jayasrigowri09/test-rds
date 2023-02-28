@@ -119,7 +119,7 @@
 
         "PublicRoute1" : {
             "Type" : "AWS::EC2::Route",
-            "Depondson": "InternetGatewayAttachment",
+            "DepondsOn": "InternetGatewayAttachment",
             "Properties": {
                 "RouteTableId": { "Ref" : "PublicRouteTable1" },
                 "DestinationCidrBlock"  :   "0.0.0.0/0",
@@ -129,7 +129,7 @@
 
         "PublicRoute2" : {
             "Type" : "AWS::EC2::Route",
-            "Depondson": "InternetGatewayAttachment",
+            "DepondsOn": "InternetGatewayAttachment",
             "Properties": {
                 "RouteTableId": { "Ref" : "PublicRouteTable2" },
                 "DestinationCidrBlock"  :   "0.0.0.0/0",
