@@ -58,7 +58,7 @@
 
         "PrivateSubnet1" : {
             "Type" : "AWS::Ec2::Subnet",
-            "properties" : {
+            "Properties" : {
                 "AvailabilityZone" : "us-east-1c",
                 "VpcId": {  "Ref" : "Rds-Demo-Vpc" },
                 "Cidrblock" : "10.0.3.0/24",
@@ -70,7 +70,7 @@
 
         "PrivateSubnet2" : {
             "Type" : "AWS::Ec2::Subnet",
-            "properties" : {
+            "Properties" : {
                 "AvailabilityZone" : "us-east-1c",
                 "VpcId" : { "Ref" : "Rds-Demo-Vpc" },
                 "Cidrblock" : "10.0.3.0/24",
