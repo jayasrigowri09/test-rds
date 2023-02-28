@@ -1,5 +1,5 @@
 {
-    "AWStemplateFormateVersion": "2010-09-09",
+    "AWSTemplateFormateVersion": "2010-09-09",
     "Description": "create ec2 and rds",
 
     "parameters" : {
