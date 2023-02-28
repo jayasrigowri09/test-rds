@@ -1,0 +1,345 @@
+{
+   "AWSTemplateFormatVersion": "2010-09-09",
+   "Description": "AWS CloudFormation Sample Template for creating an Amazon RDS DB instance.",
+   "Parameters": {
+      "AvailabilityZone": {
+         "Type": "String",
+         "Description": "select availability zone",
+         "Default": "us-east-1d"
+      },
+      "AmiId": {
+         "Type": "String",
+         "Description": "The ID of the Instance",
+         "Default": "ami-0dfcb1ef8550277af"
+      },
+      "KeyPairName": {
+         "Type": "AWS::EC2::KeyPair::KeyName"
+      },
+      "DBInstanceIdentifier": {
+         "Type": "String",
+         "Default": "webapp-db"
+      },
+      "DBUsername": {
+         "Type": "String",
+         "NoEcho": "true",
+         "Description": "Username for Mysql database access",
+         "Default": "Mysqldb"
+      },
+      "DBPassword": {
+         "Type": "String",
+         "Description": "Db password must alphanumeric"
+      }
+   },
+   "Resources": {
+      "RDSDEMOVPC": {
+         "Type": "AWS::EC2::VPC",
+         "Properties": {
+            "CidrBlock": "10.0.0.0/16",
+            "EnableDnsSupport": true,
+            "InstanceTenancy": "default",
+            "EnableDnsHostnames": true,
+            "Tags": [
+               {
+                  "Key": "Nmae",
+                  "Value": "RDSDEMOVPC"
+               }
+            ]
+         }
+      },
+      "PrivateSubnet1": {
+         "Type": "AWS::EC2::Subnet",
+         "Properties": {
+            "AvailabilityZone": "us-east-1c",
+            "VpcId": {
+               "Ref": "RDSDEMOVPC"
+            },
+            "CidrBlock": "10.0.3.0/24",
+            "Tags": [
+               {
+                  "Key": "Name",
+                  "Value": "Private-Subnet1"
+               }
+            ]
+         }
+      },
+      "PrivateSubnet2": {
+         "Type": "AWS::EC2::Subnet",
+         "Properties": {
+            "AvailabilityZone": "us-east-1b",
+            "VpcId": {
+               "Ref": "RDSDEMOVPC"
+            },
+            "CidrBlock": "10.0.4.0/24",
+            "Tags": [
+               {
+                  "Key": "Name",
+                  "Value": "Private-Subnet2"
+               }
+            ]
+         }
+      },
+      "RdsDBSubnetGroup": {
+         "Type": "AWS::RDS::DBSubnetGroup",
+         "Properties": {
+            "DBSubnetGroupDescription": "Subnet for rds",
+            "SubnetIds": [
+               {
+                  "Ref": "PrivateSubnet1"
+               },
+               {
+                  "Ref": "PrivateSubnet2"
+               }
+            ],
+            "Tags": [
+               {
+                  "Key": "Name",
+                  "Value": "Rds-DBSubnetGroup"
+               }
+            ]
+         }
+      },
+      "RdsDBInstance": {
+         "Type": "AWS::RDS::DBInstance",
+         "Properties": {
+            "AllocatedStorage": "5",
+            "VPCSecurityGroups": [
+               {
+                  "Ref": "RdsSecurityGroup"
+               }
+            ],
+            "DBSubnetGroupName": {
+               "Ref": "RdsDBSubnetGroup"
+            },
+            "DBInstanceClass": "db.t2.small",
+            "Engine": "MYSQL",
+            "EngineVersion": "8.0.28",
+            "MasterUsername": {
+               "Ref": "DBUsername"
+            },
+            "MasterUserPassword": {
+               "Ref": "DBPassword"
+            },
+            "MultiAZ": "false",
+            "Port": "3306",
+            "PubliclyAccessible": "false",
+            "Tags": [
+               {
+                  "Key": "Name",
+                  "Value": "MYRDSDEMO"
+               }
+            ]
+         }
+      },
+      "InternetGateway": {
+         "Type": "AWS::EC2::InternetGateway",
+         "Properties": {
+            "Tags": [
+               {
+                  "Key": "Name",
+                  "Value": "Test-Igw"
+               }
+            ]
+         }
+      },
+      "InternetGatewayAttachment": {
+         "Type": "AWS::EC2::VPCGatewayAttachment",
+         "Properties": {
+            "InternetGatewayId": {
+               "Ref": "InternetGateway"
+            },
+            "VpcId": {
+               "Ref": "RDSDEMOVPC"
+            }
+         }
+      },
+      "PublicSubnet1": {
+         "Type": "AWS::EC2::Subnet",
+         "Properties": {
+            "VpcId": {
+               "Ref": "RDSDEMOVPC"
+            },
+            "MapPublicIpOnLaunch": true,
+            "AvailabilityZone": "us-east-1d",
+            "CidrBlock": "10.0.1.0/24",
+            "Tags": [
+               {
+                  "Key": "Name",
+                  "Value": "Public-Subnet-Test1"
+               }
+            ]
+         }
+      },
+      "PublicSubnet2": {
+         "Type": "AWS::EC2::Subnet",
+         "Properties": {
+            "VpcId": null,
+            "AvailabilityZone": "us-east-1b",
+            "MapPublicIpOnLaunch": true,
+            "CidrBlock": "10.0.2.0/24",
+            "Tags": [
+               {
+                  "Key": "Name",
+                  "Value": "Public-Subnet-Test2"
+               }
+            ]
+         }
+      },
+      "PublicRouteTable1": {
+         "Type": "AWS::EC2::RouteTable",
+         "Properties": {
+            "VpcId": {
+               "Ref": "RDSDEMOVPC"
+            },
+            "Tags": [
+               {
+                  "Key": "Name",
+                  "Value": "Public-RT1"
+               }
+            ]
+         }
+      },
+      "PublicRouteTable2": {
+         "Type": "AWS::EC2::RouteTable",
+         "Properties": {
+            "VpcId": {
+               "Ref": "RDSDEMOVPC"
+            },
+            "Tags": [
+               {
+                  "Key": "Name",
+                  "Value": "Public-RT2"
+               }
+            ]
+         }
+      },
+      "PublicRoute1": {
+         "Type": "AWS::EC2::Route",
+         "DependsOn": "InternetGatewayAttachment",
+         "Properties": {
+            "RouteTableId": {
+               "REF": "PublicRouteTable1"
+            },
+            "DestinationCidrBlock": "0.0.0.0/0",
+            "GatewayId": {
+               "Ref": "InternetGateway"
+            }
+         }
+      },
+      "PublicRoute2": {
+         "Type": "AWS::EC2::Route",
+         "DependsOn": "InternetGatewayAttachment",
+         "Properties": {
+            "RouteTableId": {
+               "Ref": "PublicRouteTable2"
+            },
+            "DestinationCidrBlock": "0.0.0.0/0",
+            "GatewayId": {
+               "Ref": "InternetGateway"
+            }
+         }
+      },
+      "PublicSubnet1RouteTableAssociation1": {
+         "Type": "AWS::EC2::SubnetRouteTableAssociation",
+         "Properties": {
+            "RouteTableId": {
+               "Ref": "PublicRouteTable1"
+            },
+            "SubnetId": {
+               "Ref": "PublicSubnet1"
+            }
+         }
+      },
+      "PublicSubnet1RouteTableAssociation2": {
+         "Type": "AWS::EC2::SubnetRouteTableAssociation",
+         "Properties": {
+            "RouteTableId": {
+               "Ref": "PublicRouteTable2"
+            },
+            "SubnetId": {
+               "Ref": "PublicSubnet2"
+            }
+         }
+      },
+      "WebAppInstance": {
+         "Type": "AWS::EC2::Instance",
+         "Properties": {
+            "AvailabilityZone": {
+               "Ref": "AvailabilityZone"
+            },
+            "ImageId": {
+               "Ref": "AmiId"
+            },
+            "InstanceType": "t2.micro",
+            "KeyName": {
+               "Ref": "KeyPairName"
+            },
+            "SecurityGroupIds": [
+               {
+                  "Ref": "WebAppSecurityGroup"
+               }
+            ],
+            "SubnetId": {
+               "Ref": "PrivateSubnet1"
+            },
+            "Tags": [
+               {
+                  "Key": "Name",
+                  "Value": "Demo-ec2"
+               }
+            ]
+         }
+      },
+      "RdsSecurityGroup": {
+         "Type": "AWS::EC2::SecurityGroup",
+         "Properties": {
+            "GroupDescription": "Allow Rds connection",
+            "SecurityGroupIngress": [
+               {
+                  "IpProtocol": "tcp",
+                  "FromPort": 3306,
+                  "ToPort": 3306,
+                  "CidrIp": "0.0.0.0/0"
+               }
+            ],
+            "VpcId": {
+               "Ref": "RDSDEMOVPC"
+            },
+            "Tags": [
+               {
+                  "Key": "Name",
+                  "Value": "Rds-sg"
+               }
+            ]
+         }
+      },
+      "WebAppSecurityGroup": {
+         "Type": "AWS::EC2::SecurityGroup",
+         "Properties": {
+            "GroupDescription": "Allow HttPS and SSH and database",
+            "SecurityGroupIngress": [
+               {
+                  "IpProtocol": "tcp",
+                  "FromPort": 80,
+                  "ToPort": 80,
+                  "CidrIp": "0.0.0.0/0"
+               },
+               {
+                  "IpProtocol": "tcp",
+                  "FromPort": 22,
+                  "ToPort": 22,
+                  "CidrIp": "0.0.0.0/0"
+               }
+            ],
+            "VpcId": {
+               "Ref": "RDSDEMOVPC"
+            },
+            "Tags": [
+               {
+                  "Key": "Name",
+                  "Value": "Ec2-Sg"
+               }
+            ]
+         }
+      }
+   }
+}
