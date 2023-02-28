@@ -172,7 +172,9 @@
       "PublicSubnet2": {
          "Type": "AWS::EC2::Subnet",
          "Properties": {
-            "VpcId": null,
+            "VpcId": {
+               "Ref": "RDSDEMOVPC"
+            },
             "AvailabilityZone": "us-east-1b",
             "MapPublicIpOnLaunch": true,
             "CidrBlock": "10.0.2.0/24",
