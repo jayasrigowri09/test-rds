@@ -218,10 +218,14 @@
          "Type": "AWS::EC2::Route",
          "DependsOn": "InternetGatewayAttachment",
          "Properties": {
-            "RouteTableId": {
+            "RouteTableId":[
+
+             {
                "REF": "PublicRouteTable1"
-            },
+            }
+         ],
             "DestinationCidrBlock": "0.0.0.0/0",
+
             "GatewayId": {
                "Ref": "InternetGateway"
             }
@@ -231,9 +235,11 @@
          "Type": "AWS::EC2::Route",
          "DependsOn": "InternetGatewayAttachment",
          "Properties": {
-            "RouteTableId": {
+            "RouteTableId": [
+               {
                "Ref": "PublicRouteTable2"
-            },
+            }
+         ],
             "DestinationCidrBlock": "0.0.0.0/0",
             "GatewayId": {
                "Ref": "InternetGateway"
