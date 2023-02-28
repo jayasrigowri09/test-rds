@@ -31,7 +31,7 @@
             "Default" : "Mysqldb"
         },
 
-        "DbPassword" : {
+        "DBPassword" : {
             "Type" : "String",
             "Description" : "Db password must alphanumeric"
         }
@@ -168,7 +168,7 @@
             }
         },
 
-        "RdsSubnetGroup" : {
+        "DBSubnetGroup" : {
             "Type" : "AWS::RDS::DBSubnetGroup",
             "Properties" : {
                 "DBSubnetGroupDescription" : " Subnet for rds",
