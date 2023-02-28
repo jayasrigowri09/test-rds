@@ -147,7 +147,7 @@
 
         "PublicSubnetRouteTableAssociation2" : {
             "Type" : "AWS::EC2::SubetRouteTableAssociation",
-            "Properies" : {
+            "Properties" : {
                 "RouteTableId" : { "Ref" : "PublicRouteTable2" },
                 "SubnetId" : { "Ref" : "PublicSubnet2" }
             }
