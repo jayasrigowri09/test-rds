@@ -5,7 +5,7 @@
       "AvailabilityZone": {
          "Type": "String",
          "Description": "select availability zone",
-         "Default": "us-east-1d"
+         "Default": "us-east-1c"
       },
       "AmiId": {
          "Type": "String",
@@ -159,7 +159,7 @@
                "Ref": "RDSDEMOVPC"
             },
             "MapPublicIpOnLaunch": true,
-            "AvailabilityZone": "us-east-1d",
+            "AvailabilityZone": "us-east-1c",
             "CidrBlock": "10.0.1.0/24",
             "Tags": [
                {
