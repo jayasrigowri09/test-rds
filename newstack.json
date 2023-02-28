@@ -6,7 +6,7 @@
         "AvailabilityZone" : {
             "Type" : "String",
             "Description" : "Select Azs",
-            "Default" : "us-west-1d"
+            "Default" : "us-east-1d"
         },
 
         "ImageId" : {
@@ -139,7 +139,7 @@
 
         "PublicSubnetRouteTableAssociation1" : {
             "Type" : "AWS::EC2::SubetRouteTableAssociation",
-            "Properies" : {
+            "Properties" : {
                 "RouteTableId" : { "Ref" : "PublicRouteTable1" },
                 "SubnetId" : { "Ref" : "PublicSubnet1" }
             }
