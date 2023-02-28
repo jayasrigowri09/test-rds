@@ -12,7 +12,7 @@
         "ImageId" : {
             "Type" : "String",
             "Description" : "Id of the instance",
-            "Default" : ""            
+            "Default" : "ami-0dfcb1ef8550277af"            
         },
 
         "KeypairName" : {
