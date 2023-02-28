@@ -168,26 +168,120 @@
             }
         },
 
-        
+        "RdsSubnetGroup" : {
+            "Type" : "AWS::RDS::DBSubnetGroup",
+            "Properties" : {
+                "DBSubnetGroupDescription" : " Subnet for rds",
+                "SubnetIds" : [
+                    {
+                        "Ref" : "PrivateSubnet1"
+                    },
+                    {
+                        "Ref" : "PrivateSubnet2"
+                    }
+                ],
+                "Tags" : [ { "Key" : "Name", "Value" : "Rds-DBSubnetGroup" } ]
+            }
+        },
 
+        "RdsDBInstance" : {
+            "Type" : "AWS::RDS::DBInstance",
+            "Properties" : {
+                "AllocatedStorage" : "5",
+                "DBInstanceIdentifier" : { "Ref" : "DBInstanceIdentifier" },
+                "VPCSecurityGroups"  : [
+                    {
+                        "Ref": "RdsSecurityGroup"
+                    }
+                ],
+                "DBSubnetGroupName" : {
+                    "Ref" : "RdsDBSubnetGroup"
+                },
+                "DBInstanceClass" : "db.t2.small",
+                "Engine" : "MYSQL",
+                "EngineVersion" : "8.0.28",
+                "MasterUsername" : { "Ref" : "DBUsername" },
+                "MasterUserPassword" : {
+                    "Ref" : "DBPassword"
+                },
+                "MultiAZ" : "false",
+                "Port" : "3306",
+                "PubliclyAccessible" : "false",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "MYRDSDEMO"
+                    }
+                ]
+            }
+        },
 
+        "RdsSecurityGroup" : {
+            "Type" : "AWS::EC2::SecurityGroup",
+            "Properties" : {
+                "GroupDescription" : "Allow Rds connection",
+                "SecurityGroupIngress" : [
+                    {
+                        "IpProtocol" : "tcp",
+                        "FromPort" : 3306,
+                        "ToPort" : 3306,
+                        "CidrIp" : "0.0.0.0/0"
+                    }
+                ],          
+                "VpcId" : {
+                    "Ref" : "RDSDEMOVPC"
+                },
+                "Tags" : [
+                    {
+                        "Key" : "Name",
+                        "Value" : "RdsSecurityGroup"
+                    }
+                ]
+            }
+        },
 
+        "WebAppSecurityGroup" : {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties" : {
+                "GroupDescription" : "Allow Hpps and SSh",
+                "SecurityGroupIngress" : [
+                    {
+                        "IpProtocol" : "tcp",
+                        "FromPort" : 80,
+                        "ToPort" : 80,
+                        "CidrIp" : "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol" : "tcp",
+                        "FromPort" : 22,
+                        "ToPort" : 22,
+                        "CidrIp" : "0.0.0.0/0"
+                    }
+                ],
+                "VpcId" : { "Ref" : "Rds-Demo-vpc" },
+                "Tags" : [ { "Key" : "Name", "Value": "Ec2-Sg"}]
+            }
+        },
 
+        "WebAppInstance" : {
+            "Type" : "AWS::EC2::Instance",
+            "Properties" : [
+                {
+                    "AvailabilityZone" : { "Ref" : "AvailabilityZone" },
+                    "ImageId" : { "Ref" : "ImageId"},
+                    "InstanceType" : "t2.micro",
+                    "KeyName" : { "Ref" : "KeypairName"},
+                    "SecurityGroupIds" : [
+                        {
+                            "Ref": "WebAppSecurityGroup"
+                        }
+                    ],
+                    "SubnetId" : { "Ref" : "PublicSubnet1"},
+                    "Tags" : [ { "key" : "Name", "value" : "Demo-Ec2" } ]
 
+                }
+            ]
+        }
 
-
-
-
-    }    
-        
-
-
-
-
-
-
-
-
-
-
- 
+    } 
+}
