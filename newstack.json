@@ -168,7 +168,7 @@
             }
         },
 
-        "DBSubnetGroup" : {
+        "RdsDBSubnetGroup" : {
             "Type" : "AWS::RDS::DBSubnetGroup",
             "Properties" : {
                 "DBSubnetGroupDescription" : " Subnet for rds",
