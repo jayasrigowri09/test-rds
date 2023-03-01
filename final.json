@@ -34,7 +34,7 @@
       "RDSDEMOVPC": {
          "Type": "AWS::EC2::VPC",
          "Properties": {
-            "CidrBlock": "10.0.0.0/32",
+            "CidrBlock": "10.0.0.0/24",
             "EnableDnsSupport": "true",
             "InstanceTenancy": "default",
             "EnableDnsHostnames": "true",
