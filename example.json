@@ -293,16 +293,16 @@
          }
       },
       "DBSecurityGroup": {
-         "Type": "AWS::RDS::DBSecurityGroup",
+         "Type": "AWS::EC2::DBSecurityGroup",
          "Properties": {
             "GroupDescription": "Frontend Access",
             "DBSecurityGroupIngress": [
                {
                   "IpProtocol": "tcp",
                   "FromPort": 3306,
-                  "ToPort": 3306,
-                  
-                  "EC2SecurityGroupName": {
+                  "ToPort": 3306,  
+                  "SourceSecurityGroupName": {
+                     
                      "Ref": "WebAppSecurityGroup"
                   }
                   
