@@ -292,7 +292,7 @@
             ]
          }
       },
-      "DBSecurityGroup": {
+      "DBEC2SecurityGroup": {
          "Type": "AWS::EC2::DBSecurityGroup",
          "Properties": {
             "GroupDescription": "Frontend Access",
@@ -302,7 +302,7 @@
                   "FromPort": 3306,
                   "ToPort": 3306,  
                   "SourceSecurityGroupName": {
-                     
+
                      "Ref": "WebAppSecurityGroup"
                   }
                   
