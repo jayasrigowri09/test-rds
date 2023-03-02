@@ -104,7 +104,7 @@
             "AllocatedStorage": "5",
             "VPCSecurityGroups": [
                {
-                  "Ref": "DBSecurityGroup"
+                  "Ref": "DBEC2SecurityGroup"
                }
             ],
             "DBSubnetGroupName": {
