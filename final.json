@@ -221,7 +221,7 @@
             "RouteTableId":{
                "Ref": "PublicRouteTable1"
             },
-            "DestinationCidrBlock": "0.0.0.0/0",
+            "DestinationCidrBlock": "71.140.148.247/32",
 
             "GatewayId": {
                "Ref": "InternetGateway"
@@ -235,7 +235,7 @@
             "RouteTableId":{
                "Ref": "PublicRouteTable2"
             },
-            "DestinationCidrBlock": "0.0.0.0/0",
+            "DestinationCidrBlock": "71.140.148.247/32",
             "GatewayId": {
                "Ref": "InternetGateway"
             }
