@@ -293,7 +293,7 @@
          }
       },
       "DBEC2SecurityGroup": {
-         "Type": "AWS::EC2::DBSecurityGroup",
+         "Type": "AWS::EC2::SecurityGroup",
          "Properties": {
             "GroupDescription": "Frontend Access",
             "DBSecurityGroupIngress": [
