@@ -318,7 +318,7 @@
       "WebAppSecurityGroup": {
          "Type": "AWS::EC2::SecurityGroup",
          "Properties": {
-            "GroupDescription": "Allow HttPS and SSH and database",
+            "GroupDescription": "Allow HttPS and SSH and rrdsdatabase",
             "SecurityGroupIngress": [
                {
                   "IpProtocol": "tcp",
