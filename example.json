@@ -296,7 +296,7 @@
          "Type": "AWS::EC2::SecurityGroup",
          "Properties": {
             "GroupDescription": "Frontend Access",
-            "DBSecurityGroupIngress": [
+            "SecurityGroupIngress": [
                {
                   "IpProtocol": "tcp",
                   "FromPort": 3306,
