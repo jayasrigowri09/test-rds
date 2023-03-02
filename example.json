@@ -104,7 +104,7 @@
             "AllocatedStorage": "5",
             "VPCSecurityGroups": [
                {
-                  "Ref": "RdsSecurityGroup"
+                  "Ref": "DBSecurityGroup"
                }
             ],
             "DBSubnetGroupName": {
@@ -292,8 +292,8 @@
             ]
          }
       },
-      "RdsSecurityGroup": {
-         "Type": "AWS::RDS::SecurityGroup",
+      "DBSecurityGroup": {
+         "Type": "AWS::RDS::DBSecurityGroup",
          "Properties": {
             "GroupDescription": "Frontend Access",
             "DBSecurityGroupIngress": [
